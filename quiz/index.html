@@ -171,6 +171,8 @@
                 <div style="font-size:12px;color:#94a3b8;font-weight:700;margin-bottom:8px" id="q-progress">1 / 5</div>
                 <div id="q-text" style="font-size:19px;font-weight:800;margin-bottom:22px;line-height:1.5"></div>
                 <div id="q-options" style="display:flex;flex-direction:column;gap:10px"></div>
+                <div id="q-explanation" class="hidden" style="margin-top:16px;padding:14px 16px;background:#eef2ff;border:1px solid #c7d2fe;border-radius:14px;font-size:13px;color:#3730a3;line-height:1.6"></div>
+                <button id="q-next-btn" class="hidden" onclick="goToNextQuestion()" style="margin-top:14px;width:100%;padding:12px;border:none;border-radius:12px;background:#4f46e5;color:#fff;font-weight:800;font-size:14px;cursor:pointer">다음 문제 →</button>
             </div>
 
             <div id="q-end" class="hidden text-center py-10">
@@ -505,26 +507,26 @@
     <script>
         // ⚠️ 문제은행 — 이 배열만 고치면 문항을 늘리거나 바꿀 수 있습니다. 매 판마다 이 중 5개를 무작위로 뽑습니다.
         const QUESTION_BANK = [
-            { q: '대한민국의 수도는 어디일까요?', options: ['서울', '부산', '인천', '대전'], answer: 0 },
-            { q: '물의 화학식은 무엇일까요?', options: ['CO2', 'H2O', 'O2', 'NaCl'], answer: 1 },
-            { q: '세계에서 가장 긴 강은?', options: ['한강', '나일강', '낙동강', '두만강'], answer: 1 },
-            { q: '1년은 며칠일까요? (평년 기준)', options: ['364일', '365일', '366일', '360일'], answer: 1 },
-            { q: '태양계에서 가장 큰 행성은?', options: ['지구', '토성', '목성', '화성'], answer: 2 },
-            { q: '한글을 창제한 왕은?', options: ['태종', '세종대왕', '정조', '영조'], answer: 1 },
-            { q: '무지개는 몇 가지 색으로 이루어져 있을까요?', options: ['5가지', '6가지', '7가지', '8가지'], answer: 2 },
-            { q: '피아노 건반은 총 몇 개일까요?', options: ['76개', '88개', '92개', '100개'], answer: 1 },
-            { q: '사람의 뼈는 총 몇 개일까요? (성인 기준)', options: ['186개', '206개', '226개', '246개'], answer: 1 },
-            { q: '올림픽은 몇 년마다 열릴까요?', options: ['2년', '3년', '4년', '5년'], answer: 2 },
-            { q: '커피의 원료가 되는 식물은?', options: ['카카오', '커피나무', '녹차나무', '보리'], answer: 1 },
-            { q: '지구에서 가장 큰 대륙은?', options: ['아프리카', '유럽', '아시아', '북아메리카'], answer: 2 },
-            { q: '벌집의 방은 보통 어떤 모양일까요?', options: ['사각형', '원형', '삼각형', '육각형'], answer: 3 },
-            { q: '우리나라의 화폐 단위는?', options: ['엔', '위안', '원', '달러'], answer: 2 },
-            { q: '거미는 다리가 몇 개일까요?', options: ['6개', '8개', '10개', '4개'], answer: 1 },
-            { q: '세계에서 인구가 가장 많은 나라는?', options: ['미국', '인도', '중국', '인도네시아'], answer: 1 },
-            { q: '1킬로그램은 몇 그램일까요?', options: ['100g', '1000g', '10000g', '10g'], answer: 1 },
-            { q: '광복절은 몇 월 며칠일까요?', options: ['3월 1일', '6월 6일', '8월 15일', '10월 3일'], answer: 2 },
-            { q: '사람 몸에서 가장 큰 장기는?', options: ['간', '심장', '피부', '폐'], answer: 2 },
-            { q: '눈의 결정은 보통 몇 각형일까요?', options: ['4각형', '5각형', '6각형', '8각형'], answer: 2 },
+            { q: '대한민국의 수도는 어디일까요?', options: ['서울', '부산', '인천', '대전'], answer: 0, explanation: '서울은 대한민국의 수도이자 인구·경제 규모 모두 최대인 도시입니다.' },
+            { q: '물의 화학식은 무엇일까요?', options: ['CO2', 'H2O', 'O2', 'NaCl'], answer: 1, explanation: '물 분자는 수소 원자 2개와 산소 원자 1개로 이루어져 있어 H2O로 표기합니다.' },
+            { q: '세계에서 가장 긴 강은?', options: ['한강', '나일강', '낙동강', '두만강'], answer: 1, explanation: '나일강은 아프리카를 흐르며 총 길이 약 6,650km로, 통상 세계에서 가장 긴 강으로 꼽힙니다.' },
+            { q: '1년은 며칠일까요? (평년 기준)', options: ['364일', '365일', '366일', '360일'], answer: 1, explanation: '평년은 365일이며, 4년마다 오는 윤년에는 2월이 하루 늘어 366일이 됩니다.' },
+            { q: '태양계에서 가장 큰 행성은?', options: ['지구', '토성', '목성', '화성'], answer: 2, explanation: '목성은 태양계에서 가장 큰 행성으로, 부피가 지구의 약 1,300배에 달합니다.' },
+            { q: '한글을 창제한 왕은?', options: ['태종', '세종대왕', '정조', '영조'], answer: 1, explanation: '세종대왕은 1443년 훈민정음(한글)을 창제하고 1446년 반포했습니다.' },
+            { q: '무지개는 몇 가지 색으로 이루어져 있을까요?', options: ['5가지', '6가지', '7가지', '8가지'], answer: 2, explanation: '무지개는 통상 빨·주·노·초·파·남·보 7가지 색으로 구분합니다.' },
+            { q: '피아노 건반은 총 몇 개일까요?', options: ['76개', '88개', '92개', '100개'], answer: 1, explanation: '표준 피아노는 흰건반 52개, 검은건반 36개로 총 88개입니다.' },
+            { q: '사람의 뼈는 총 몇 개일까요? (성인 기준)', options: ['186개', '206개', '226개', '246개'], answer: 1, explanation: '성인의 몸은 총 206개의 뼈로 이루어져 있습니다. 신생아 때는 약 300개인데, 성장하며 일부가 서로 융합됩니다.' },
+            { q: '올림픽은 몇 년마다 열릴까요?', options: ['2년', '3년', '4년', '5년'], answer: 2, explanation: '하계·동계 올림픽 모두 4년 주기로 열리며, 하계와 동계가 2년 간격으로 번갈아 개최됩니다.' },
+            { q: '커피의 원료가 되는 식물은?', options: ['카카오', '커피나무', '녹차나무', '보리'], answer: 1, explanation: '커피는 커피나무 열매(커피체리) 속 씨앗인 원두를 볶아서 만듭니다.' },
+            { q: '지구에서 가장 큰 대륙은?', options: ['아프리카', '유럽', '아시아', '북아메리카'], answer: 2, explanation: '아시아는 면적과 인구 모두 세계에서 가장 큰 대륙입니다.' },
+            { q: '벌집의 방은 보통 어떤 모양일까요?', options: ['사각형', '원형', '삼각형', '육각형'], answer: 3, explanation: '벌집은 육각형 구조로, 같은 재료로 가장 넓은 공간을 만들 수 있어 매우 효율적인 형태입니다.' },
+            { q: '우리나라의 화폐 단위는?', options: ['엔', '위안', '원', '달러'], answer: 2, explanation: '대한민국의 공식 화폐 단위는 \'원(KRW)\'입니다.' },
+            { q: '거미는 다리가 몇 개일까요?', options: ['6개', '8개', '10개', '4개'], answer: 1, explanation: '거미는 곤충이 아닌 절지동물(거미강)로 분류되며, 다리가 8개입니다. 곤충은 다리가 6개입니다.' },
+            { q: '세계에서 인구가 가장 많은 나라는?', options: ['미국', '인도', '중국', '인도네시아'], answer: 1, explanation: '인도는 2023년경 중국을 넘어서며 세계에서 인구가 가장 많은 국가가 되었습니다.' },
+            { q: '1킬로그램은 몇 그램일까요?', options: ['100g', '1000g', '10000g', '10g'], answer: 1, explanation: '1킬로그램(kg)은 1,000그램(g)입니다.' },
+            { q: '광복절은 몇 월 며칠일까요?', options: ['3월 1일', '6월 6일', '8월 15일', '10월 3일'], answer: 2, explanation: '광복절은 1945년 8월 15일 일제강점기에서 해방된 것을 기념하는 국경일입니다.' },
+            { q: '사람 몸에서 가장 큰 장기는?', options: ['간', '심장', '피부', '폐'], answer: 2, explanation: '피부는 면적과 무게 모두 인체에서 가장 큰 장기입니다.' },
+            { q: '눈의 결정은 보통 몇 각형일까요?', options: ['4각형', '5각형', '6각형', '8각형'], answer: 2, explanation: '눈 결정은 물 분자의 육각형 결합 구조 때문에 대부분 6각형 형태를 띱니다.' },
         ];
 
         const QUESTIONS_PER_WEEK = 5;
@@ -622,15 +624,24 @@
                 else if (i === selectedIndex) btn.classList.add('wrong');
             });
 
-            setTimeout(() => {
-                currentIndex++;
-                if (currentIndex < quizQuestions.length) {
-                    renderQuestion();
-                } else {
-                    document.getElementById('q-play').classList.add('hidden');
-                    document.getElementById('q-end').classList.remove('hidden');
-                }
-            }, 1100);
+            const expEl = document.getElementById('q-explanation');
+            if (q.explanation) {
+                expEl.textContent = '💡 ' + q.explanation;
+                expEl.classList.remove('hidden');
+            }
+            document.getElementById('q-next-btn').classList.remove('hidden');
+        }
+
+        function goToNextQuestion() {
+            document.getElementById('q-explanation').classList.add('hidden');
+            document.getElementById('q-next-btn').classList.add('hidden');
+            currentIndex++;
+            if (currentIndex < quizQuestions.length) {
+                renderQuestion();
+            } else {
+                document.getElementById('q-play').classList.add('hidden');
+                document.getElementById('q-end').classList.remove('hidden');
+            }
         }
     </script>
 </body>
