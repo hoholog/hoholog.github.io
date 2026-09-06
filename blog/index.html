@@ -1114,8 +1114,11 @@
             return new Date(ts).toLocaleDateString('ko-KR');
         }
 
-        // 커뮤니티 전체(카테고리 구분 없이)에서 가장 최근 글 1개는 본문·공유·댓글까지
-        // 전부 펼쳐서 바로 보여주고, 그 아래에 지난 글 목록을 짧게 붙인다.
+        // 커뮤니티 전체(카테고리 구분 없이)에서 글 1개를 본문·공유·댓글까지 전부 펼쳐서 보여주고,
+        // 그 아래에 다른 글 목록을 짧게 붙인다. 지난 글 클릭 시 별도 정적 페이지로 이동하지 않고
+        // (blog/posts/{id}.html은 실제로 만들어지지 않아 404가 남) 이 화면 안에서 바로 전환한다.
+        let _allCommunityPosts = [];
+
         async function loadCommunityFeed() {
             const wrap = document.getElementById('community-feed');
             if (!wrap) return;
@@ -1128,15 +1131,30 @@
                     wrap.innerHTML = '<div class="bbs-loading">아직 등록된 게시글이 없습니다.</div>';
                     return;
                 }
+                _allCommunityPosts = posts;
+                // ?post=ID로 공유된 링크로 들어온 경우 그 글을, 아니면 최신 글을 보여준다.
+                const params = new URLSearchParams(location.search);
+                const requestedId = parseInt(params.get('post'), 10);
+                const startId = posts.some(p => p.id === requestedId) ? requestedId : posts[0].id;
+                await viewCommunityPost(startId, false);
+            } catch (e) {
+                wrap.innerHTML = '<div class="bbs-loading">❌ 불러오기 실패. 잠시 후 다시 시도해주세요.</div>';
+            }
+        }
 
-                const latest = posts[0];
-                const past = posts.slice(1, 1 + PAST_LIST_SIZE);
-
-                const dr = await fetch(POSTS_API + '/' + latest.id + '?_=' + Date.now(), { cache: 'no-store' });
+        async function viewCommunityPost(id, scroll) {
+            const wrap = document.getElementById('community-feed');
+            if (!wrap) return;
+            wrap.innerHTML = '<div class="bbs-loading">⏳ 불러오는 중...</div>';
+            try {
+                const dr = await fetch(POSTS_API + '/' + id + '?_=' + Date.now(), { cache: 'no-store' });
                 const ddata = await dr.json();
                 const post = ddata.post;
                 _communityLatestTitle = post.title;
                 const body = post.content ? cfEscapeHtml(post.content).replace(/\n/g,'<br>') : '';
+                // URL을 ?post=ID로 맞춰둬서, 지금 이 화면을 그대로 공유·새로고침해도 같은 글이 보이게 한다.
+                history.replaceState(null, '', location.pathname + '?post=' + id);
+                const past = _allCommunityPosts.filter(p => p.id !== post.id).slice(0, PAST_LIST_SIZE);
 
                 let html =
                     '<span style="display:inline-block;background:#eef2ff;color:#4f46e5;font-size:11px;font-weight:800;padding:4px 12px;border-radius:9999px;margin-bottom:10px">'+cfEscapeHtml(post.category)+'</span>' +
@@ -1146,12 +1164,12 @@
                     '<div style="text-align:center;margin-bottom:24px">' +
                         '<div style="font-size:11px;font-weight:800;color:#94a3b8;margin-bottom:8px;letter-spacing:.05em">🔗 이 글을 공유해보세요</div>' +
                         '<div style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap">' +
-                            '<button onclick="communitySnsShare(\'facebook\','+latest.id+')" aria-label="페이스북 공유" style="width:32px;height:32px;border-radius:50%;border:none;cursor:pointer;background:#1877f2;color:#fff;font-weight:900;font-size:13px">f</button>' +
-                            '<button onclick="communitySnsShare(\'x\','+latest.id+')" aria-label="X 공유" style="width:32px;height:32px;border-radius:50%;border:none;cursor:pointer;background:#000;color:#fff;font-weight:900;font-size:12px">X</button>' +
-                            '<button onclick="communitySnsShare(\'kakaot\','+latest.id+')" aria-label="카카오톡 공유" style="width:32px;height:32px;border-radius:50%;border:none;cursor:pointer;background:#fee500;color:#3c1e1e;font-size:15px">💬</button>' +
-                            '<button onclick="communitySnsShare(\'naver\','+latest.id+')" aria-label="네이버 공유" style="width:32px;height:32px;border-radius:50%;border:none;cursor:pointer;background:#03c75a;color:#fff;font-weight:900;font-size:13px">N</button>' +
-                            '<button onclick="communitySnsShare(\'band\','+latest.id+')" aria-label="밴드 공유" style="width:32px;height:32px;border-radius:50%;border:none;cursor:pointer;background:#00c73c;color:#fff;font-weight:900;font-size:11px">밴드</button>' +
-                            '<button onclick="communitySnsShare(\'line\','+latest.id+')" aria-label="라인 공유" style="width:32px;height:32px;border-radius:50%;border:none;cursor:pointer;background:#06c755;color:#fff;font-weight:900;font-size:11px">라인</button>' +
+                            '<button onclick="communitySnsShare(\'facebook\','+post.id+')" aria-label="페이스북 공유" style="width:32px;height:32px;border-radius:50%;border:none;cursor:pointer;background:#1877f2;color:#fff;font-weight:900;font-size:13px">f</button>' +
+                            '<button onclick="communitySnsShare(\'x\','+post.id+')" aria-label="X 공유" style="width:32px;height:32px;border-radius:50%;border:none;cursor:pointer;background:#000;color:#fff;font-weight:900;font-size:12px">X</button>' +
+                            '<button onclick="communitySnsShare(\'kakaot\','+post.id+')" aria-label="카카오톡 공유" style="width:32px;height:32px;border-radius:50%;border:none;cursor:pointer;background:#fee500;color:#3c1e1e;font-size:15px">💬</button>' +
+                            '<button onclick="communitySnsShare(\'naver\','+post.id+')" aria-label="네이버 공유" style="width:32px;height:32px;border-radius:50%;border:none;cursor:pointer;background:#03c75a;color:#fff;font-weight:900;font-size:13px">N</button>' +
+                            '<button onclick="communitySnsShare(\'band\','+post.id+')" aria-label="밴드 공유" style="width:32px;height:32px;border-radius:50%;border:none;cursor:pointer;background:#00c73c;color:#fff;font-weight:900;font-size:11px">밴드</button>' +
+                            '<button onclick="communitySnsShare(\'line\','+post.id+')" aria-label="라인 공유" style="width:32px;height:32px;border-radius:50%;border:none;cursor:pointer;background:#06c755;color:#fff;font-weight:900;font-size:11px">라인</button>' +
                         '</div>' +
                     '</div>' +
                     '<div style="padding:16px;background:#f8fafc;border:1px solid #f1f5f9;border-radius:16px">' +
@@ -1171,9 +1189,9 @@
 
                 if (past.length > 0) {
                     html += '<div style="margin-top:32px;padding-top:24px;border-top:1px solid #e2e8f0">' +
-                        '<div style="font-size:12px;font-weight:900;color:#94a3b8;letter-spacing:.05em;margin-bottom:12px">📋 지난 글</div>' +
+                        '<div style="font-size:12px;font-weight:900;color:#94a3b8;letter-spacing:.05em;margin-bottom:12px">📋 다른 글</div>' +
                         '<div>' + past.map(p =>
-                            '<a href="/blog/posts/'+p.id+'.html" class="bbs-post" style="display:block;text-decoration:none">' +
+                            '<a href="?post='+p.id+'" onclick="viewCommunityPost('+p.id+',true);return false;" class="bbs-post" style="display:block;text-decoration:none">' +
                                 '<div class="bbs-post-title">'+cfEscapeHtml(p.title)+'</div>' +
                                 '<div class="bbs-post-meta"><span>'+cfEscapeHtml(p.category)+'</span><span>'+cfFormatDate(p.created_at)+'</span><span>👤 '+cfEscapeHtml(p.author)+'</span></div>' +
                             '</a>'
@@ -1183,6 +1201,7 @@
 
                 wrap.innerHTML = html;
                 loadCommunityComments(post.id);
+                if (scroll) wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
             } catch (e) {
                 wrap.innerHTML = '<div class="bbs-loading">❌ 불러오기 실패. 잠시 후 다시 시도해주세요.</div>';
             }
@@ -1246,7 +1265,7 @@
 
         function communitySnsShare(type, id) {
             const title = _communityLatestTitle;
-            const pageUrl = 'https://hohoplaylab.com/blog/posts/' + id + '.html';
+            const pageUrl = 'https://hohoplaylab.com/blog/?post=' + id;
             const url = encodeURIComponent(pageUrl);
             const encTitle = encodeURIComponent(title);
 
@@ -1317,49 +1336,6 @@
     // ── 대신: 게임 iframe 내 캔버스에서만 우클릭 차단이 필요하다면
     //    game1.html / game2.html 내부의 <canvas> 요소에 직접 아래를 추가하세요:
     //    canvas.addEventListener('contextmenu', e => e.preventDefault());
-</script>
-
-<!-- ══════════════ [디버그용] /posts API 직접 확인 도구 ══════════════
-     "ㅋ" 게시글 노출 문제 진단용. 원인 확인 끝나면 이 블록 통째로 삭제하면 됨. -->
-<button id="hp-debug-btn" onclick="hpDebugFetchPosts()" style="position:fixed;bottom:16px;left:16px;z-index:99999;background:#1e293b;color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;opacity:0.85;box-shadow:0 2px 8px rgba(0,0,0,.3)">🐛 /posts 디버그</button>
-<div id="hp-debug-panel" style="display:none;position:fixed;inset:0;z-index:100000;background:rgba(0,0,0,0.85);padding:20px;overflow-y:auto">
-    <div style="max-width:640px;margin:0 auto;background:#0f172a;border-radius:12px;padding:20px;color:#e2e8f0;font-family:'Courier New',monospace;font-size:12px;line-height:1.7">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-            <span style="color:#818cf8;font-weight:900">🐛 /posts API 응답 (실시간)</span>
-            <button onclick="document.getElementById('hp-debug-panel').style.display='none'" style="background:#334155;color:#fff;border:none;border-radius:6px;padding:5px 12px;cursor:pointer;font-size:12px">닫기</button>
-        </div>
-        <div id="hp-debug-content" style="white-space:pre-wrap;word-break:break-all">불러오는 중...</div>
-    </div>
-</div>
-<script>
-async function hpDebugFetchPosts() {
-    const panel = document.getElementById('hp-debug-panel');
-    const content = document.getElementById('hp-debug-content');
-    panel.style.display = 'block';
-    content.textContent = '불러오는 중...';
-    try {
-        const url = 'https://old-rain-16f7.lyh0929mm.workers.dev/posts?_=' + Date.now();
-        const res = await fetch(url, { cache: 'no-store' });
-        const data = await res.json();
-        const posts = data.posts || [];
-        let text = '요청 시각: ' + new Date().toLocaleString('ko-KR') + '\n';
-        text += '요청 URL: ' + url + '\n';
-        text += 'HTTP 상태: ' + res.status + '\n';
-        text += '응답 Cache-Control: ' + (res.headers.get('cache-control') || '(헤더 없음)') + '\n';
-        text += '응답 CF-Cache-Status: ' + (res.headers.get('cf-cache-status') || '(헤더 없음, Cloudflare 캐시 아님)') + '\n';
-        text += 'Age: ' + (res.headers.get('age') || '(없음)') + '\n';
-        text += '총 게시글 수: ' + posts.length + '\n';
-        text += '─────────────────────────\n';
-        posts.forEach(function(p, i) {
-            text += (i + 1) + '. [ID:' + p.id + '] (' + p.category + ') "' + p.title + '"\n';
-            text += '    작성: ' + new Date(p.created_at).toLocaleString('ko-KR') + '\n';
-        });
-        if (!posts.length) text += '(게시글 없음)\n';
-        content.textContent = text;
-    } catch (e) {
-        content.textContent = '요청 실패: ' + e.message;
-    }
-}
 </script>
 
 </body>
