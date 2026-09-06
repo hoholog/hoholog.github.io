@@ -1,16 +1,5 @@
 [
   {
-    "title": "강경 국가유산야행",
-    "lat": "36.1615935000",
-    "lng": "127.0173957000",
-    "startDate": "20260828",
-    "endDate": "20260905",
-    "addr": "충청남도 논산시 강경읍 중앙리",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/87/3519787_image2_1.JPG",
-    "tel": "041-730-2971,3",
-    "contentid": "3346571"
-  },
-  {
     "title": "강남페스티벌",
     "lat": "37.5221428648",
     "lng": "127.0369343307",
@@ -42,17 +31,6 @@
     "image": "https://tong.visitkorea.or.kr/cms/resource/24/3546224_image2_1.JPG",
     "tel": "033-647-6802",
     "contentid": "825295"
-  },
-  {
-    "title": "강북 백맥축제",
-    "lat": "37.6427129901",
-    "lng": "127.0269935899",
-    "startDate": "20260904",
-    "endDate": "20260905",
-    "addr": "서울특별시 강북구 도봉로97길 45 (수유동)",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/74/4061374_image2_1.JPG",
-    "tel": "02-901-7253",
-    "contentid": "4061361"
   },
   {
     "title": "거제맥주축제",
@@ -1496,17 +1474,6 @@
     "contentid": "3486887"
   },
   {
-    "title": "요즘 청년, 요즘 문화",
-    "lat": "37.5510972768",
-    "lng": "126.9214939470",
-    "startDate": "20260904",
-    "endDate": "20260905",
-    "addr": "서울특별시 마포구 어울마당로 68 (서교동)",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/92/4097492_image2_1.jpg",
-    "tel": "070-7575-2353",
-    "contentid": "4097339"
-  },
-  {
     "title": "울산고래축제",
     "lat": "35.5031615190",
     "lng": "129.3808069186",
@@ -1824,17 +1791,6 @@
     "image": "https://tong.visitkorea.or.kr/cms/resource/13/4087113_image2_1.png",
     "tel": "033-242-8452",
     "contentid": "573459"
-  },
-  {
-    "title": "제51회 강원축산경진대회",
-    "lat": "37.7482373527",
-    "lng": "128.8949156650",
-    "startDate": "20260904",
-    "endDate": "20260905",
-    "addr": "강원특별자치도 강릉시 단오장길 1 (노암동)",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/68/4104768_image2_1.jpg",
-    "tel": "010-9776-2721",
-    "contentid": "4104765"
   },
   {
     "title": "제5회 호러 홀로그램 페스티벌",
@@ -2253,17 +2209,6 @@
     "image": "https://tong.visitkorea.or.kr/cms/resource/98/4055198_image2_1.jpg",
     "tel": "031-538-3030",
     "contentid": "3352029"
-  },
-  {
-    "title": "포항 10미(味) 야장축제",
-    "lat": "35.9595568634",
-    "lng": "129.4032436899",
-    "startDate": "20260904",
-    "endDate": "20260905",
-    "addr": "경상북도 포항시 남구 오천읍 문덕로 35",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/50/4100350_image2_1.jpg",
-    "tel": "054-270-8282",
-    "contentid": "4100347"
   },
   {
     "title": "포항 해뜨면 국수축제",
@@ -2772,17 +2717,6 @@
     "contentid": "2667707"
   },
   {
-    "title": "2026 제4회 문경트롯가요제",
-    "lat": "36.6036575365",
-    "lng": "128.2144468582",
-    "startDate": "20260905",
-    "endDate": "20260905",
-    "addr": "경상북도 문경시 흥덕동 69-1",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/19/4106219_image2_1.jpg",
-    "tel": "054-851-7187",
-    "contentid": "3115326"
-  },
-  {
     "title": "2026 제5회 제주비엔날레 허끄곡 모닥치곡 이야홍 : 변용의 기술",
     "lat": "33.4525500193",
     "lng": "126.4896860910",
@@ -2803,17 +2737,6 @@
     "image": "https://tong.visitkorea.or.kr/cms/resource/20/4096920_image2_1.jpg",
     "tel": "064-762-2190",
     "contentid": "1074568"
-  },
-  {
-    "title": "2026 창작 실경뮤지컬 〈화적연 천년의 약속〉",
-    "lat": "38.1163000000",
-    "lng": "127.2618000000",
-    "startDate": "20260904",
-    "endDate": "20260905",
-    "addr": "경기도 포천시 관인면 사정리 66",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/47/4099547_image2_1.jpg",
-    "tel": "031-535-5135",
-    "contentid": "3372317"
   },
   {
     "title": "2026 천안 K-컬처박람회",

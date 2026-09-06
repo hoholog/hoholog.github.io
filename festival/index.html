@@ -566,12 +566,17 @@
     loadFooter();
 
     // 모바일에서 다른 앱을 쓰다가 브라우저로 돌아올 때, 페이지가 새로 로드되지 않고
-    // 이전 상태 그대로 복원(bfcache)되면서 fetch로 넣어둔 푸터가 빈 채로 남는 경우가 있어,
-    // 화면이 다시 보일 때마다 푸터가 비어있으면 다시 불러온다.
+    // 이전 상태 그대로 복원(bfcache)되면서 fetch로 넣어둔 푸터가 깨지거나, 지도 레이아웃이
+    // 틀어지며 푸터가 화면 밖으로 밀리는 경우가 있어, 화면이 다시 보일 때마다 조건 없이
+    // 푸터를 다시 불러오고 지도도 재정렬한다.
     window.addEventListener('pageshow', function () {
-        const footerEl = document.getElementById('site-footer');
-        if (footerEl && footerEl.innerHTML.trim() === '') {
+        loadFooter();
+        relayoutMap();
+    });
+    document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'visible') {
             loadFooter();
+            relayoutMap();
         }
     });
 </script>
