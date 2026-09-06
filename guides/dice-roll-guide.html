@@ -178,6 +178,9 @@
         <h2 class="text-xl font-black text-slate-900 mt-8 mb-3">사용법</h2>
         <p>버튼을 누르면 주사위가 굴러가는 애니메이션과 함께 1~6 사이의 숫자 하나가 무작위로 결정됩니다. 별도의 예측 입력 없이 바로 결과를 확인합니다.</p>
 
+        <h2 class="text-xl font-black text-slate-900 mt-8 mb-3">결과는 어떻게 결정되나요</h2>
+        <p>버튼을 누르면 1부터 6까지의 정수 중 하나를 균등한 확률(각 16.7%)로 뽑습니다. 굴러가는 동안 화면에 잠깐씩 보이는 숫자들은 최종 결과와 무관한 연출용 눈속임이고, 진짜 결과는 애니메이션이 멈추는 바로 그 순간에 새로 뽑아 결정됩니다.</p>
+
         <h2 class="text-xl font-black text-slate-900 mt-8 mb-3">활용 요령</h2>
         <div class="space-y-3 mt-4">
             <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
@@ -386,6 +389,115 @@
             }, 1200);
         }
 
+
+        let lgN = 0, lgRungs = [], lgLabels = [], lgRows = 10, lgDone = false;
+
+        function makeLadder() {
+            lgN = Math.max(2, Math.min(10, parseInt(document.getElementById('lg-count').value) || 4));
+            const raw = document.getElementById('lg-results').value.trim();
+            lgLabels = raw ? raw.split('\n').map(s => s.trim()).filter(Boolean) : [];
+            while (lgLabels.length < lgN) lgLabels.push(String(lgLabels.length + 1));
+            lgLabels = lgLabels.slice(0, lgN);
+            // 셔플
+            for (let i = lgLabels.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [lgLabels[i], lgLabels[j]] = [lgLabels[j], lgLabels[i]];
+            }
+
+            lgRungs = [];
+            for (let r = 0; r < lgRows; r++) {
+                const row = new Array(lgN - 1).fill(false);
+                let i = 0;
+                while (i < lgN - 1) {
+                    if (Math.random() < 0.35) { row[i] = true; i += 2; }
+                    else i += 1;
+                }
+                lgRungs.push(row);
+            }
+
+            document.getElementById('lg-setup').classList.add('hidden');
+            document.getElementById('lg-board').classList.remove('hidden');
+            document.getElementById('lg-result').textContent = '';
+            lgDone = false;
+            drawLadder();
+        }
+
+        function drawLadder() {
+            const svg = document.getElementById('lg-svg');
+            const width = svg.clientWidth || 320;
+            const height = 320;
+            const topPad = 36, botPad = 20;
+            const usableH = height - topPad - botPad;
+            const spacing = width / (lgN + 1);
+            svg.setAttribute('viewBox', '0 0 ' + width + ' ' + height);
+            svg.innerHTML = '';
+
+            for (let i = 0; i < lgN; i++) {
+                const x = spacing * (i + 1);
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', x); line.setAttribute('y1', topPad);
+                line.setAttribute('x2', x); line.setAttribute('y2', height - botPad);
+                line.setAttribute('stroke', '#cbd5e1'); line.setAttribute('stroke-width', '3');
+                svg.appendChild(line);
+
+                const numText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                numText.setAttribute('x', x); numText.setAttribute('y', topPad - 12);
+                numText.setAttribute('text-anchor', 'middle'); numText.setAttribute('font-size', '13');
+                numText.setAttribute('font-weight', '900'); numText.setAttribute('fill', '#4f46e5');
+                numText.setAttribute('cursor', 'pointer');
+                numText.textContent = (i + 1);
+                numText.addEventListener('click', () => runLadder(i));
+                svg.appendChild(numText);
+
+                const labelText = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                labelText.setAttribute('x', x); labelText.setAttribute('y', height - botPad + 16);
+                labelText.setAttribute('text-anchor', 'middle'); labelText.setAttribute('font-size', '11');
+                labelText.setAttribute('font-weight', '700'); labelText.setAttribute('fill', '#64748b');
+                labelText.textContent = '?';
+                labelText.setAttribute('id', 'lg-bottom-' + i);
+                svg.appendChild(labelText);
+            }
+
+            for (let r = 0; r < lgRows; r++) {
+                const y = topPad + (usableH / (lgRows - 1)) * r;
+                lgRungs[r].forEach((has, i) => {
+                    if (!has) return;
+                    const x1 = spacing * (i + 1), x2 = spacing * (i + 2);
+                    const rung = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                    rung.setAttribute('x1', x1); rung.setAttribute('y1', y);
+                    rung.setAttribute('x2', x2); rung.setAttribute('y2', y);
+                    rung.setAttribute('stroke', '#cbd5e1'); rung.setAttribute('stroke-width', '3');
+                    svg.appendChild(rung);
+                });
+            }
+        }
+
+        function traceLadder(start) {
+            let pos = start;
+            const path = [pos];
+            for (let r = 0; r < lgRows; r++) {
+                const row = lgRungs[r];
+                if (pos > 0 && row[pos - 1]) pos -= 1;
+                else if (pos < lgN - 1 && row[pos]) pos += 1;
+                path.push(pos);
+            }
+            return { end: pos, path };
+        }
+
+        function runLadder(start) {
+            if (lgDone) return;
+            lgDone = true;
+            const { end } = traceLadder(start);
+            document.getElementById('lg-result').textContent = (start + 1) + '번 → ' + lgLabels[end];
+            const bottomEl = document.getElementById('lg-bottom-' + end);
+            if (bottomEl) { bottomEl.textContent = lgLabels[end]; bottomEl.setAttribute('fill', '#4f46e5'); }
+        }
+
+        function resetLadder() {
+            document.getElementById('lg-setup').classList.remove('hidden');
+            document.getElementById('lg-board').classList.add('hidden');
+        }
+    
     </script>
     <button id="back-to-game-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" title="게임 화면으로 이동"
         style="display:none;position:fixed;right:16px;bottom:24px;z-index:60;width:52px;height:52px;border-radius:16px;border:none;background:#4f46e5;color:#fff;box-shadow:0 8px 20px rgba(79,70,229,.35);cursor:pointer;align-items:center;justify-content:center;flex-direction:column;gap:2px;transition:transform .15s"
