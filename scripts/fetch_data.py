@@ -277,6 +277,123 @@ def generate_detail_pages(festivals):
     print(f"상세페이지 신규 생성: {new_count}건 (festival/detail/)")
 
 
+def get_region_key(addr):
+    """주소로부터 지역 키를 판정한다 (map.html의 필터 로직과 동일한 기준)."""
+    for key, keywords in REGION_KEYWORDS:
+        if addr and any(kw in addr for kw in keywords):
+            return key
+    return None
+
+
+def build_festival_list_page(list_items):
+    """지도(JS 마커)는 검색봇이 발견하지 못하는 링크라, 축제 상세페이지 전체를
+    순수 텍스트 링크 목록으로 모아둔 크롤링 전용 페이지를 만든다.
+    지도는 사람용, 이 페이지(festival/list.html)는 검색봇용 목록이다."""
+    now = datetime.datetime.now()
+    month_label = f"{now.year}년 {now.month}월"
+
+    def fmt_date(raw):
+        return f"{raw[:4]}.{raw[4:6]}.{raw[6:8]}" if raw and len(raw) == 8 else (raw or '')
+
+    by_region = {key: [] for key, _ in REGION_KEYWORDS}
+    unclassified = []
+    for f in list_items:
+        key = get_region_key(f.get('addr', ''))
+        (by_region[key] if key else unclassified).append(f)
+
+    def render_group(label, items):
+        items = sorted(items, key=lambda x: x.get('endDate') or '')
+        lines = [f'<h2 class="region-heading">{html.escape(label)}</h2>', '<ul class="festival-list">']
+        for f in items:
+            title = html.escape(f.get('title') or '')
+            addr = html.escape(f.get('addr') or '')
+            date_label = f"{fmt_date(f.get('startDate'))} ~ {fmt_date(f.get('endDate'))}"
+            content_id = f.get('contentid')
+            link = f'/festival/detail/{content_id}.html' if content_id else '#'
+            lines.append(f'<li><a href="{link}">{title}</a> — {date_label} · {addr}</li>')
+        lines.append('</ul>')
+        return '\n'.join(lines)
+
+    sections = []
+    for key, _ in REGION_KEYWORDS:
+        if by_region[key]:
+            sections.append(render_group(REGION_LABELS[key], by_region[key]))
+    if unclassified:
+        sections.append(render_group('기타 지역', unclassified))
+    body = '\n'.join(sections) if sections else '<p>현재 등록된 축제 정보가 없습니다.</p>'
+
+    page = f"""<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{month_label} 전국 축제 목록 - HOHO PLAY 축제 지도</title>
+<meta name="description" content="{month_label} 기준 전국에서 진행 중이거나 예정된 축제를 지역별로 모은 전체 목록입니다.">
+<link rel="canonical" href="https://hohoplaylab.com/festival/list.html">
+<style>
+body{{font-family:'Noto Sans KR',sans-serif;max-width:720px;margin:0 auto;padding:24px 16px;color:#1e293b;line-height:1.7}}
+h1{{font-size:1.5rem;font-weight:900}}
+.region-heading{{font-size:1.1rem;font-weight:800;margin-top:28px;color:#4f46e5;border-bottom:2px solid #e0e7ff;padding-bottom:6px}}
+.festival-list{{list-style:none;padding:0;margin:12px 0}}
+.festival-list li{{padding:8px 0;border-bottom:1px solid #f1f5f9;font-size:14px}}
+.festival-list a{{color:#1e293b;font-weight:700;text-decoration:none}}
+.festival-list a:hover{{color:#4f46e5;text-decoration:underline}}
+.back-link{{display:inline-block;margin-top:24px;color:#4f46e5;font-weight:700;text-decoration:none}}
+</style>
+</head>
+<body>
+<h1>{month_label} 전국 축제 목록</h1>
+<p>현재 진행 중이거나 곧 시작하는 전국 축제를 지역별로 모았습니다. 지도에서 한눈에 보고 싶다면 <a href="/festival/">축제 지도</a>를 이용해보세요.</p>
+{body}
+<a class="back-link" href="/festival/">← 지도에서 보기</a>
+</body>
+</html>"""
+
+    os.makedirs('festival', exist_ok=True)
+    with open('festival/list.html', 'w', encoding='utf-8') as fp:
+        fp.write(page)
+    print(f"festival/list.html 갱신 완료 (총 {len(list_items)}건 링크)")
+
+
+def update_sitemap(list_items):
+    """sitemap.xml에서 festival/detail/* 및 festival/list.html 항목만 지우고,
+    현재 유효한(종료 후 유예기간 이내 포함) 주소로 새로 채운다.
+    다른 페이지(홈, 게임, 약관 등) 항목은 절대 건드리지 않는다."""
+    import re
+    sitemap_path = 'sitemap.xml'
+    if not os.path.exists(sitemap_path):
+        print("sitemap.xml이 없어 건너뜁니다.")
+        return
+
+    with open(sitemap_path, 'r', encoding='utf-8') as fp:
+        content = fp.read()
+
+    content = re.sub(
+        r'\s*<url>\s*<loc>https://hohoplaylab\.com/festival/(?:detail/[^<]+|list\.html)</loc>.*?</url>',
+        '',
+        content,
+        flags=re.DOTALL
+    )
+
+    new_blocks = [
+        f'  <url>\n    <loc>https://hohoplaylab.com/festival/detail/{f["contentid"]}.html</loc>\n'
+        f'    <changefreq>monthly</changefreq>\n    <priority>0.6</priority>\n  </url>\n'
+        for f in list_items if f.get('contentid')
+    ]
+    new_blocks.append(
+        '  <url>\n    <loc>https://hohoplaylab.com/festival/list.html</loc>\n'
+        '    <changefreq>daily</changefreq>\n    <priority>0.7</priority>\n  </url>\n'
+    )
+
+    insertion = ''.join(new_blocks)
+    content = content.replace('</urlset>', insertion + '</urlset>') if '</urlset>' in content \
+        else content.rstrip() + '\n' + insertion
+
+    with open(sitemap_path, 'w', encoding='utf-8') as fp:
+        fp.write(content)
+    print(f"sitemap.xml 갱신 완료 (축제 상세 {len(new_blocks) - 1}건 + 목록페이지 1건)")
+
+
 def pick_region_representatives(today_list):
     """오늘 진행중인 축제 중, 지역별로 마감이 가장 임박한 축제 1개씩을 대표로 뽑는다
     (지역마다 진행중인 축제가 없으면 그 지역은 건너뛰므로 결과는 최대 6개, 보통 5~6개)."""
@@ -421,6 +538,34 @@ def main():
     generate_detail_pages(festivals)
 
     update_map_html(festivals, TODAY)
+
+    # ── 사이트맵 / 크롤러용 목록 페이지 ──────────────────────────────
+    # 지도 마커 안의 상세 링크는 JS로 그려져 검색봇이 발견하지 못하므로,
+    # 상세페이지 주소를 sitemap.xml에 직접 등록하고 순수 텍스트 목록 페이지도 만든다.
+    # 종료된 축제도 곧바로 빼지 않고 GRACE_DAYS일간은 남겨둬서, 이미 색인된 페이지가
+    # 갑자기 사라진 것으로 오인되지 않게 한다.
+    GRACE_DAYS = 30
+    grace_cutoff = (datetime.datetime.now() - datetime.timedelta(days=GRACE_DAYS)).strftime('%Y%m%d')
+    sitemap_items = []
+    for item in all_items:
+        content_id = item.get('contentid', '')
+        end_date = item.get('eventenddate', '')
+        if not content_id:
+            continue
+        if end_date and end_date < grace_cutoff:
+            continue
+        if not os.path.exists(os.path.join('festival', 'detail', f'{content_id}.html')):
+            continue  # 상세페이지가 실제로 존재하는 것만 등록
+        sitemap_items.append({
+            'title': item.get('title'),
+            'addr': item.get('addr1', ''),
+            'startDate': item.get('eventstartdate'),
+            'endDate': end_date,
+            'contentid': content_id,
+        })
+
+    build_festival_list_page(sitemap_items)
+    update_sitemap(sitemap_items)
 
 
 if __name__ == '__main__':
