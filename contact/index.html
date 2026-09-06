@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VGTXTM4R91"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-VGTXTM4R91');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>문의하기 - 호호플레이(HOHO PLAY)</title>
+    <meta name="description" content="호호플레이(HOHO PLAY) 문의 안내. 제휴·광고 문의, 게임 버그 제보, 일반 문의를 목적에 맞는 채널로 안내합니다.">
+    <link rel="canonical" href="https://hohoplaylab.com/contact/">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col">
+
+    <nav class="bg-white/90 backdrop-blur-md border-b sticky top-0 z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-14 items-center">
+                <a href="/index.html" class="flex items-center gap-2 cursor-pointer">
+                    <div class="w-8 h-8 rounded-xl flex items-center justify-center text-white font-black shadow-md" style="font-size:9px;letter-spacing:-0.5px;line-height:1.1;background:#4f46e5;">HOHO<br>PLAY</div>
+                    <span class="text-lg font-black tracking-tighter uppercase"><span class="text-indigo-600">HOHO</span><span class="text-violet-500"> PLAY</span></span>
+                </a>
+                <a href="/index.html" class="font-black text-sm hover:opacity-70 transition" style="color:#4f46e5;">← 홈으로</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow max-w-3xl mx-auto w-full px-4 py-12">
+        <h1 class="text-3xl font-black text-slate-900 mb-2 leading-tight">문의하기</h1>
+        <p class="text-slate-500 mb-10">Contact Us</p>
+
+        <p class="text-slate-600 text-lg leading-relaxed font-medium mb-10">
+            호호플레이(HOHO PLAY)를 이용해 주셔서 감사합니다. 문의 목적에 따라 아래 채널을 이용해 주시면 가장 빠르게 안내받으실 수 있습니다.
+        </p>
+
+        <div class="space-y-6">
+            <div class="p-6 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                <h2 class="text-lg font-black text-slate-900 mb-2">1. 제휴 및 광고 문의</h2>
+                <p class="text-slate-600 leading-relaxed mb-3">비즈니스 제휴, 서비스 제휴, 광고 문의는 파트너 전용 페이지를 통해 접수해 주세요.</p>
+                <a href="/partner/" class="inline-flex items-center gap-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 font-black text-sm px-5 py-3 rounded-full transition">파트너 제휴 문의 바로가기 →</a>
+            </div>
+
+            <div class="p-6 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                <h2 class="text-lg font-black text-slate-900 mb-2">2. 게임 버그 제보 및 개선 의견</h2>
+                <p class="text-slate-600 leading-relaxed">각 게임을 플레이하는 중 발생한 오류나 개선 의견은 해당 게임 화면 안에 있는 <strong class="text-slate-800">문의하기</strong> 버튼을 이용해 주시면 어떤 게임에서 있었던 일인지 정확히 확인하고 빠르게 답변드릴 수 있습니다.</p>
+            </div>
+
+            <div class="p-6 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                <h2 class="text-lg font-black text-slate-900 mb-2">3. 기타 일반 문의 및 개인정보 관련</h2>
+                <p class="text-slate-600 leading-relaxed mb-4">서비스 이용 관련 기타 문의나 개인정보 관련 요청은 아래 운영자 이메일로 연락해 주시기 바랍니다.</p>
+                <ul class="text-slate-600 space-y-1">
+                    <li><strong class="text-slate-800">운영자 이메일:</strong> <a href="mailto:lyh0929mm@gmail.com" class="text-indigo-600 underline">lyh0929mm@gmail.com</a></li>
+                    <li><strong class="text-slate-800">응답 안내:</strong> 순차적으로 확인 후 답변드리고 있습니다.</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script>
+        fetch('/footer.html')
+            .then(function(r){ if (!r.ok) throw new Error('footer not found'); return r.text(); })
+            .then(function(html){
+                document.getElementById('footer-placeholder').outerHTML = html;
+            })
+            .catch(function(){ /* footer.html 없으면 그냥 스킵 */ });
+    </script>
+
+</body>
+</html>
