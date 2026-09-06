@@ -1121,7 +1121,7 @@
             if (!wrap) return;
             wrap.innerHTML = '<div class="bbs-loading">⏳ 불러오는 중...</div>';
             try {
-                const r = await fetch(POSTS_API);
+                const r = await fetch(POSTS_API + '?_=' + Date.now(), { cache: 'no-store' });
                 const data = await r.json();
                 const posts = data.posts || [];
                 if (!posts.length) {
@@ -1132,7 +1132,7 @@
                 const latest = posts[0];
                 const past = posts.slice(1, 1 + PAST_LIST_SIZE);
 
-                const dr = await fetch(POSTS_API + '/' + latest.id);
+                const dr = await fetch(POSTS_API + '/' + latest.id + '?_=' + Date.now(), { cache: 'no-store' });
                 const ddata = await dr.json();
                 const post = ddata.post;
                 _communityLatestTitle = post.title;
