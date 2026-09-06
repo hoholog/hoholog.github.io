@@ -37,24 +37,34 @@ REGION_LABELS = {
 
 
 def fetch_all_items(max_retries=3):
-    """Vercel 프록시(서울 리전)를 통해 TourAPI 데이터를 한 번에 받아온다."""
+    """Vercel 프록시(서울 리전)를 통해 TourAPI 데이터를 한 번에 받아온다.
+
+    festivals.js는 실패해도 항상 JSON({"error": "진짜 이유..."}) 형태로 응답하도록 짜여있다.
+    상태코드와 무관하게 항상 본문을 먼저 파싱해서 진짜 원인을 그대로 로그에 남긴다
+    (res.raise_for_status()를 먼저 부르면 502 등에서 본문이 버려져 원인을 알 수 없게 된다)."""
     last_error = None
     for attempt in range(1, max_retries + 1):
         try:
             res = requests.get(PROXY_URL, params={'from': SEARCH_FROM}, timeout=30)
-            res.raise_for_status()
-            data = res.json()
+            try:
+                data = res.json()
+            except ValueError:
+                data = None
 
-            if 'error' in data:
-                raise RuntimeError(f"프록시 오류 응답: {data['error']}")
+            if res.ok and isinstance(data, dict) and 'error' not in data:
+                return data.get('items', [])
 
-            return data.get('items', [])
-        except (requests.exceptions.RequestException, RuntimeError, ValueError) as e:
+            if isinstance(data, dict) and 'error' in data:
+                last_error = RuntimeError(f"HTTP {res.status_code} - {data['error']}")
+            else:
+                last_error = RuntimeError(f"HTTP {res.status_code} - {(res.text or '')[:200]}")
+        except requests.exceptions.RequestException as e:
             last_error = e
-            wait = 5 * attempt
-            print(f"프록시 호출 실패({attempt}/{max_retries}): {e} — {wait}초 후 재시도")
-            if attempt < max_retries:
-                time.sleep(wait)
+
+        wait = 5 * attempt
+        print(f"프록시 호출 실패({attempt}/{max_retries}): {last_error} — {wait}초 후 재시도")
+        if attempt < max_retries:
+            time.sleep(wait)
     raise last_error
 
 
