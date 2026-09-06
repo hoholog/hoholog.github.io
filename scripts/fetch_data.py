@@ -185,9 +185,10 @@ def build_detail_page_html(festival, overview, intro):
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{title} - 실시간 전국 축제 지도</title>
+<title>{title} - 전국 축제 지도</title>
 <meta name="description" content="{title} | {date_label} | {addr}">
 <link rel="icon" href="/favicon.svg">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7990191075290055" crossorigin="anonymous"></script>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
   * {{ box-sizing: border-box; }}
@@ -253,18 +254,30 @@ def generate_detail_pages(festivals):
     """각 축제의 상세페이지(festival/detail/{contentid}.html)를 생성한다.
     이미 만들어진 페이지는 다시 만들지 않고, 새로 나타난 contentid만 생성한다 —
     축제 상세 정보(요금·주최 등)는 한 번 생성되면 바뀔 일이 거의 없고,
-    매일 전체를 다시 만들면 TourAPI 호출만 불필요하게 늘어나기 때문."""
+    매일 전체를 다시 만들면 TourAPI 호출만 불필요하게 늘어나기 때문.
+    다만 애드센스 코드처럼 "이미 있는 페이지에도 나중에 새로 추가된 태그"가
+    빠져있는 경우, TourAPI를 다시 부르지 않고 그 자리에서 코드만 삽입해 보정한다."""
     detail_dir = os.path.join('festival', 'detail')
     os.makedirs(detail_dir, exist_ok=True)
 
+    ADSENSE_TAG = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7990191075290055" crossorigin="anonymous"></script>'
+
     new_count = 0
+    patched_count = 0
     for f in festivals:
         content_id = f.get('contentid')
         if not content_id:
             continue
         out_path = os.path.join(detail_dir, f'{content_id}.html')
         if os.path.exists(out_path):
-            continue  # 이미 생성된 페이지는 건드리지 않음
+            with open(out_path, 'r', encoding='utf-8') as fp:
+                existing = fp.read()
+            if ADSENSE_TAG not in existing and '</head>' in existing:
+                existing = existing.replace('</head>', f'{ADSENSE_TAG}\n</head>')
+                with open(out_path, 'w', encoding='utf-8') as fp:
+                    fp.write(existing)
+                patched_count += 1
+            continue  # 애드센스 보정 외에는 이미 생성된 페이지를 건드리지 않음
 
         overview = fetch_detail_overview(content_id)
         intro = fetch_intro_fields(content_id)
@@ -274,7 +287,7 @@ def generate_detail_pages(festivals):
         new_count += 1
         time.sleep(0.3)  # TourAPI에 과도하게 연속 호출하지 않도록 약간의 간격
 
-    print(f"상세페이지 신규 생성: {new_count}건 (festival/detail/)")
+    print(f"상세페이지 신규 생성: {new_count}건, 애드센스 코드 보정: {patched_count}건 (festival/detail/)")
 
 
 def get_region_key(addr):
@@ -330,6 +343,7 @@ def build_festival_list_page(list_items):
 <title>{month_label} 전국 축제 목록 - HOHO PLAY 축제 지도</title>
 <meta name="description" content="{month_label} 기준 전국에서 진행 중이거나 예정된 축제를 지역별로 모은 전체 목록입니다.">
 <link rel="canonical" href="https://hohoplaylab.com/festival/list.html">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7990191075290055" crossorigin="anonymous"></script>
 <style>
 body{{font-family:'Noto Sans KR',sans-serif;max-width:720px;margin:0 auto;padding:24px 16px;color:#1e293b;line-height:1.7}}
 h1{{font-size:1.5rem;font-weight:900}}
