@@ -111,6 +111,10 @@
             }
             .today-panel-backdrop.open { opacity: 1; visibility: visible; }
             .today-toggle-btn { display: flex; }
+
+            /* 100dvh는 모바일에서 앱 전환 후 주소창 애니메이션 중 값이 불안정하게 계산되며
+               푸터 위치가 흔들리는 원인이 될 수 있어, 모바일에서는 화면의 70%로 고정한다. */
+            .map-wrapper { height: 70vh; }
         }
 
         @media (min-width: 769px) {
