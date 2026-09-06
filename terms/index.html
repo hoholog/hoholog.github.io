@@ -609,69 +609,6 @@
                     </div>
                 </div>
             `,
-            blog: `
-                <div class="page-transition">
-                    <style>
-                        .bbs-wrap{background:#0a0e2e;border-radius:16px;padding:24px;font-family:'Courier New',monospace;min-height:500px}
-                        .bbs-top{color:#00ffff;font-size:13px;border-bottom:1px solid #1a2a5e;padding-bottom:10px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center}
-                        .bbs-title{color:#ffd700;font-size:22px;font-weight:900;text-align:center;margin-bottom:20px;text-shadow:0 0 10px #ffd70088}
-                        .bbs-menu-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-bottom:24px}
-                        .bbs-section h3{color:#00e5ff;font-size:13px;font-weight:700;border-bottom:1px solid #1a3a6e;padding-bottom:6px;margin-bottom:12px}
-                        .bbs-item{color:#7ec8e3;font-size:13px;padding:8px 0;cursor:pointer;display:flex;align-items:center;gap:8px;border-bottom:1px solid #0d1a40;transition:color .2s}
-                        .bbs-item:hover{color:#00ffff}
-                        .bbs-item .num{color:#4a6fa5;min-width:24px}
-                        .bbs-ship{text-align:center;margin-top:20px}
-                        .bbs-ship-name{color:#00e5ff;font-size:14px;font-weight:700;margin-top:8px}
-                        .bbs-board{display:none;background:#060b20;border-radius:12px;padding:20px;margin-top:16px}
-                        .bbs-board.active{display:block}
-                        .bbs-board-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px}
-                        .bbs-board-title{color:#ffd700;font-size:16px;font-weight:700}
-                        .bbs-write-btn{background:#1a3a6e;color:#00e5ff;border:1px solid #00e5ff;padding:6px 16px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;transition:all .2s}
-                        .bbs-write-btn:hover{background:#00e5ff;color:#0a0e2e}
-                        .bbs-post{border-bottom:1px solid #1a2a5e;padding:12px 0;cursor:pointer}
-                        .bbs-post:hover .bbs-post-title{color:#00ffff}
-                        .bbs-post-title{color:#7ec8e3;font-size:14px;margin-bottom:4px}
-                        .bbs-post-meta{color:#4a6fa5;font-size:11px;display:flex;gap:12px;flex-wrap:wrap}
-                        .bbs-post-comments{color:#00e5ff}
-                        .bbs-loading{color:#4a6fa5;text-align:center;padding:30px;font-size:13px}
-                        .bbs-back{color:#4a6fa5;font-size:12px;cursor:pointer;margin-bottom:12px;display:inline-block;transition:color .2s}
-                        .bbs-back:hover{color:#00e5ff}
-                        @media(max-width:640px){.bbs-menu-grid{grid-template-columns:1fr}}
-                    </style>
-                    <div class="bbs-wrap">
-                        <div class="bbs-top">
-                            <span>🖥 HOHO PLAY BBS v1.0</span>
-                            <span id="bbs-clock"></span>
-                        </div>
-                        <div class="bbs-title">
-                            <span style="display:inline-flex;align-items:center;gap:12px">
-                                <span style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;background:#4f46e5;border-radius:10px;font-family:Arial Black,sans-serif;font-size:26px;font-weight:900;color:#fff;box-shadow:0 0 18px #4f46e588">H</span>
-                                <span>HOHO PLAY 커뮤니티</span>
-                            </span>
-                        </div>
-                        <div id="bbs-main">
-                            <div style="display:flex;gap:12px;justify-content:center;margin-bottom:24px;flex-wrap:wrap">
-                                <div class="bbs-item" onclick="openBoard('공지사항','공지사항')" style="border-bottom:none;padding:10px 24px;background:#0d1a40;border-radius:8px;justify-content:center">공지사항</div>
-                                <div class="bbs-item" onclick="openBoard('업데이트','업데이트')" style="border-bottom:none;padding:10px 24px;background:#0d1a40;border-radius:8px;justify-content:center">업데이트</div>
-                                <div class="bbs-item" onclick="openBoard('자유게시판','자유게시판')" style="border-bottom:none;padding:10px 24px;background:#0d1a40;border-radius:8px;justify-content:center">자유게시판</div>
-                            </div>
-                            <div class="bbs-ship">
-                                <div style="display:inline-flex;align-items:center;justify-content:center;width:72px;height:72px;background:linear-gradient(135deg,#4f46e5,#7c3aed);border-radius:18px;font-family:Arial Black,sans-serif;font-size:44px;font-weight:900;color:#fff;box-shadow:0 0 30px #4f46e566;margin-bottom:10px">H</div>
-                                <div class="bbs-ship-name">HOHO PLAY BBS</div>
-                                <div style="color:#4a6fa5;font-size:11px;margin-top:4px">Since 2026</div>
-                            </div>
-                        </div>
-                        <div id="bbs-board-area" class="bbs-board">
-                            <span class="bbs-back" onclick="closeBoard()">◀ 메인으로</span>
-                            <div class="bbs-board-top">
-                                <span class="bbs-board-title" id="bbs-board-name"></span>
-                                <a id="bbs-write-link" href="https://github.com/hoholog/hoholog/issues/new" target="_blank" class="bbs-write-btn">✏ 글쓰기</a>
-                            </div>
-                            <div id="bbs-posts"><div class="bbs-loading">⏳ 불러오는 중...</div></div>
-                        </div>
-                    </div>
-                </div>
-            `,
                         fortune: `
                 <div class="page-transition">
                     <div class="mb-8" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:4px">
@@ -750,7 +687,7 @@
                             <p class="mb-4">HOHO PLAY은 회원가입을 요구하지 않으며, 별도의 개인정보를 직접 수집하지 않습니다. 다만, 서비스 운영 과정에서 아래와 같은 정보가 자동으로 처리될 수 있습니다.</p>
                             <ul class="list-disc list-inside space-y-2 text-slate-600">
                                 <li><strong>브라우저 로컬 스토리지:</strong> 게임 점수, 진행 상황, 환경설정 등 사용자의 기기 내에만 저장되며 서버로 전송되지 않습니다.</li>
-                                <li><strong>GitHub API:</strong> 커뮤니티(BBS) 기능 이용 시 GitHub Issues API를 통해 게시글이 처리됩니다. 이 과정에서 GitHub의 서버에 IP 주소 및 브라우저 정보(User-Agent)가 전달될 수 있으며, 이는 GitHub의 개인정보처리방침에 따릅니다.</li>
+                                <li><strong>Cloudflare Workers:</strong> 댓글 및 커뮤니티 게시판 기능 이용 시 Cloudflare Workers를 통해 게시글·댓글이 처리됩니다. 이 과정에서 Cloudflare의 서버에 IP 주소 및 브라우저 정보(User-Agent)가 전달될 수 있으며, 이는 Cloudflare의 개인정보처리방침에 따릅니다.</li>
                                 <li><strong>운세 서비스:</strong> 사주·타로 등 운세 기능은 입력하신 생년월일, 이름, 질문 내용을 브라우저 내에서 계산 로직으로 처리하며, 외부 서버로 전송되지 않습니다.</li>
                                 <li><strong>Google AdSense (광고 서비스):</strong> 본 서비스는 Google AdSense를 통해 광고를 제공합니다. Google은 쿠키 및 광고 식별자를 사용하여 사용자의 관심사에 맞는 맞춤형 광고를 표시할 수 있습니다. Google이 수집하는 데이터에 대한 자세한 내용은 <a href="https://policies.google.com/technologies/ads" target="_blank" class="text-indigo-600 underline">Google 광고 정책</a>을 참고하시기 바랍니다. 사용자는 <a href="https://adssettings.google.com/" target="_blank" class="text-indigo-600 underline">Google 광고 설정</a>에서 맞춤 광고를 거부하거나 관심사 기반 광고를 비활성화할 수 있습니다.</li>
                             </ul>
@@ -928,9 +865,12 @@
                                         <tr><td class="p-3 border border-slate-100">Tailwind CSS</td><td class="p-3 border border-slate-100">MIT License</td></tr>
                                         <tr class="bg-slate-50"><td class="p-3 border border-slate-100">Noto Sans KR (Google Fonts)</td><td class="p-3 border border-slate-100">SIL Open Font License 1.1</td></tr>
                                         <tr><td class="p-3 border border-slate-100">html2canvas</td><td class="p-3 border border-slate-100">MIT License</td></tr>
-                                        <tr class="bg-slate-50"><td class="p-3 border border-slate-100">GitHub Issues API</td><td class="p-3 border border-slate-100">GitHub Terms of Service</td></tr>
-                                        <tr><td class="p-3 border border-slate-100">Giscus (댓글 위젯)</td><td class="p-3 border border-slate-100">MIT License</td></tr>
-                                    </tbody>
+                                        <tr class="bg-slate-50"><td class="p-3 border border-slate-100">Cloudflare Workers (댓글·커뮤니티 게시판 API)</td><td class="p-3 border border-slate-100">Cloudflare Terms of Service</td></tr>
+                                        <tr><td class="p-3 border border-slate-100">Kakao Maps SDK / Kakao JS SDK</td><td class="p-3 border border-slate-100">Kakao Developers 이용약관</td></tr>
+                                        <tr class="bg-slate-50"><td class="p-3 border border-slate-100">한국관광공사 TourAPI (공공데이터포털)</td><td class="p-3 border border-slate-100">공공데이터포털 이용약관</td></tr>
+                                        <tr><td class="p-3 border border-slate-100">Google Analytics</td><td class="p-3 border border-slate-100">Google Analytics 서비스 약관</td></tr>
+                                        <tr class="bg-slate-50"><td class="p-3 border border-slate-100">Google AdSense</td><td class="p-3 border border-slate-100">Google AdSense 프로그램 정책</td></tr>
+                                                                            </tbody>
                                 </table>
                             </div>
                         </div>
@@ -1071,7 +1011,6 @@
                     }, 5000);
                 }
             }
-            if (page === 'blog') bbsInit();
         }
 
         // 푸터 사이트맵 링크
@@ -1126,139 +1065,6 @@
             });
         }
 
-        // ═══════════════════════════════
-        //  BBS 커뮤니티 (GitHub Issues)
-        // ═══════════════════════════════
-        const GH_OWNER = 'hoholog';
-        const GH_REPO  = 'hoholog';
-
-        function bbsInit() {
-            (function tick(){
-                const el = document.getElementById('bbs-clock');
-                if(el) { el.textContent = new Date().toLocaleTimeString('ko-KR'); setTimeout(tick,1000); }
-            })();
-        }
-
-        function loadGiscus(term) {
-            const container = document.getElementById('giscus-container');
-            if(!container) return;
-            container.innerHTML = '';
-            const s = document.createElement('script');
-            s.src = 'https://giscus.app/client.js';
-            s.setAttribute('data-repo', 'hoholog/hoholog');
-            s.setAttribute('data-repo-id', 'R_kgDORWaWXQ');
-            s.setAttribute('data-category', 'General');
-            s.setAttribute('data-category-id', 'DIC_kwDORWaWXc4C4glA');
-            s.setAttribute('data-mapping', 'specific');
-            s.setAttribute('data-term', term);
-            s.setAttribute('data-reactions-enabled', '1');
-            s.setAttribute('data-emit-metadata', '0');
-            s.setAttribute('data-input-position', 'top');
-            s.setAttribute('data-theme', 'dark_dimmed');
-            s.setAttribute('data-lang', 'ko');
-            s.setAttribute('crossorigin', 'anonymous');
-            s.async = true;
-            container.appendChild(s);
-        }
-
-        function openBoard(label, name) {
-            document.getElementById('bbs-main').style.display = 'none';
-            document.getElementById('bbs-board-area').classList.add('active');
-            document.getElementById('bbs-board-name').textContent = '[ '+name+' ]';
-
-            // 자유게시판만 글쓰기 버튼 표시
-            const writeBtn = document.getElementById('bbs-write-link');
-            if(name === '자유게시판') {
-                writeBtn.style.display = 'inline-block';
-                writeBtn.href = 'https://github.com/'+GH_OWNER+'/'+GH_REPO+'/issues/new?labels='+encodeURIComponent(label)+'&title=['+encodeURIComponent(name)+']%20';
-            } else {
-                writeBtn.style.display = 'none';
-            }
-            loadIssues(label, name);
-        }
-
-        function closeBoard() {
-            document.getElementById('bbs-main').style.display = 'block';
-            document.getElementById('bbs-board-area').classList.remove('active');
-        }
-
-        async function loadIssues(label, boardType) {
-            const el = document.getElementById('bbs-posts');
-            el.innerHTML = '<div class="bbs-loading">⏳ 게시글 불러오는 중...</div>';
-            try {
-                const url = 'https://api.github.com/repos/'+GH_OWNER+'/'+GH_REPO+'/issues?labels='+encodeURIComponent(label)+'&state=open&per_page=30&sort=created&direction=desc';
-                const r = await fetch(url, {headers:{'Accept':'application/vnd.github.v3+json'}});
-                const posts = await r.json();
-                if(!posts.length){
-                    el.innerHTML = '<div class="bbs-loading">📭 등록된 게시글이 없습니다.' +
-                        (boardType==='자유게시판' ? '<br><br><a href="https://github.com/'+GH_OWNER+'/'+GH_REPO+'/issues/new?labels='+encodeURIComponent(label)+'" target="_blank" style="color:#00e5ff">첫 글을 작성해보세요! ✏</a>' : '') +
-                        '</div>';
-                    return;
-                }
-                el.dataset.label = label;
-                el.innerHTML = posts.map((p,i) => {
-                    const d = new Date(p.created_at);
-                    const ds = d.getFullYear()+'.'+(d.getMonth()+1).toString().padStart(2,'0')+'.'+d.getDate().toString().padStart(2,'0');
-                    const commentsBadge = boardType==='자유게시판' ? '<span class="bbs-post-comments">💬 '+p.comments+'</span>' : '';
-                    return '<div class="bbs-post" onclick="viewPost('+p.number+',\''+p.title.replace(/'/g,"\\'")+'\',\''+boardType+'\')">'+
-                        '<div class="bbs-post-title">'+String(i+1).padStart(2,'0')+'. '+p.title+'</div>'+
-                        '<div class="bbs-post-meta">'+
-                            '<span>'+ds+'</span>'+
-                            '<span>👤 '+p.user.login+'</span>'+
-                            commentsBadge+
-                        '</div>'+
-                    '</div>';
-                }).join('');
-            } catch(e) {
-                el.innerHTML = '<div class="bbs-loading">❌ 불러오기 실패. 잠시 후 다시 시도해주세요.</div>';
-            }
-        }
-
-        async function viewPost(number, title, boardType) {
-            const el = document.getElementById('bbs-posts');
-            const label = el.dataset.label || '';
-            el.innerHTML = '<div class="bbs-loading">⏳ 글 불러오는 중...</div>';
-            try {
-                const r = await fetch('https://api.github.com/repos/'+GH_OWNER+'/'+GH_REPO+'/issues/'+number, {headers:{'Accept':'application/vnd.github.v3+json'}});
-                const post = await r.json();
-
-                const d = new Date(post.created_at);
-                const ds = d.getFullYear()+'.'+(d.getMonth()+1).toString().padStart(2,'0')+'.'+d.getDate().toString().padStart(2,'0');
-                const body = post.body ? post.body.replace(/\n/g,'<br>') : '(내용 없음)';
-
-                const isFree = (boardType === '자유게시판');
-
-                // 댓글 (자유게시판만 giscus)
-                let commentsHtml = '';
-                if(isFree) {
-                    commentsHtml =
-                        '<div style="margin-top:24px;border-top:1px solid #1a2a5e;padding-top:16px">'+
-                        '<div style="color:#00e5ff;font-size:13px;font-weight:700;margin-bottom:12px">💬 댓글</div>'+
-                        '<div id="giscus-container"></div>'+
-                        '</div>';
-                }
-
-                el.innerHTML =
-                    '<span class="bbs-back" onclick="loadIssues(\''+label+'\',\''+boardType+'\')">◀ 목록으로</span>'+
-                    '<div style="border-bottom:1px solid #1a2a5e;padding-bottom:14px;margin-bottom:14px">'+
-                        '<div style="color:#ffd700;font-size:16px;font-weight:700;margin-bottom:8px">'+post.title+'</div>'+
-                        '<div style="color:#4a6fa5;font-size:12px">👤 '+post.user.login+' · '+ds+'</div>'+
-                    '</div>'+
-                    '<div style="color:#7ec8e3;font-size:14px;line-height:1.9;margin-bottom:20px;min-height:60px">'+body+'</div>'+
-                    commentsHtml;
-
-                // giscus 로드 (자유게시판만)
-                if(isFree) {
-                    setTimeout(() => loadGiscus('issue-'+number), 100);
-                }
-            } catch(e) {
-                el.innerHTML = '<div class="bbs-loading">❌ 불러오기 실패</div>';
-            }
-        }
-        // const 사용 금지 — fortune.html var와 충돌 방지
-        window.BLOG_ID  = '5608603268556826697';
-        window.API_KEY  = 'AIzaSyDBqlEZSs5HElZZYf0XyIMZOFpn10f0cu0';
-        window.BASE_URL = 'https://www.googleapis.com/blogger/v3';
     </script>
 
     <!-- 운세·타로·MBTI 모듈 동적 로드 -->
