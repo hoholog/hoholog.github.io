@@ -162,7 +162,7 @@
         window.addEventListener('focus', function() { checkVersion(true); });
     })();
     </script>
-  <meta name="build-version" content="20260906034429_9a8aba92">
+  <meta name="build-version" content="20260906042607_24b3b8a7">
 </head>
 <body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col">
 
@@ -642,35 +642,33 @@
         }
 
         function mainSnsShare(type) {
-            var url = encodeURIComponent(location.origin + '/');
-            var text = encodeURIComponent('로그인 없이 바로 즐기는 웹게임과 운세, HOHO PLAY');
-            var shareUrl = '';
+            // 검증된 최종 버전 (축제 지도에서 발견/수정한 문제 반영):
+            // - 카카오톡: 모바일은 OS 공유시트, PC는 카드 방식이 엉뚱한 페이지로 새는 문제가
+            //   있어 링크를 직접 보여주는 방식(prompt) 사용
+            // - 밴드: route만으로는 게시글 본문에 링크가 안 붙어서 본문 텍스트에 직접 포함
+            // - 팝업 크기 지정 제거 (모바일에서 팝업 차단 대상으로 취급되는 문제 방지)
+            var pageUrl = location.origin + '/';
+            var url = encodeURIComponent(pageUrl);
+            var title = 'HOHO PLAY - 로그인 없는 무료 웹게임 포털';
+            var text = encodeURIComponent(title);
+
             if (type === 'kakaot') {
-                if (window.Kakao && window.Kakao.isInitialized && window.Kakao.isInitialized()) {
-                    Kakao.Share.sendDefault({
-                        objectType: 'feed',
-                        content: {
-                            title: 'HOHO PLAY - 로그인 없는 무료 웹게임 포털',
-                            description: '타이핑, 퍼즐, 러닝, 레이싱 게임과 운세를 한곳에서. 설치·가입 없이 바로 즐기세요.',
-                            imageUrl: 'https://hohoplaylab.com/data/banner.png',
-                            link: { mobileWebUrl: location.origin + '/', webUrl: location.origin + '/' }
-                        },
-                        buttons: [
-                            { title: '지금 플레이하기', link: { mobileWebUrl: location.origin + '/', webUrl: location.origin + '/' } }
-                        ]
-                    });
-                } else if (navigator.clipboard) {
-                    navigator.clipboard.writeText(location.origin + '/');
-                    alert('링크가 복사되었습니다. 카카오톡에 붙여넣어 공유해주세요!');
+                var isMobileDevice = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+                if (isMobileDevice && navigator.share) {
+                    navigator.share({ title: title, url: pageUrl }).catch(function () {});
+                    return;
                 }
+                prompt('아래 링크를 선택해서 복사한 뒤 카카오톡에 붙여넣어 공유해주세요', pageUrl);
                 return;
             }
+
+            var shareUrl = '';
             if (type === 'facebook') shareUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + url;
             else if (type === 'x') shareUrl = 'https://twitter.com/intent/tweet?url=' + url + '&text=' + text;
             else if (type === 'naver') shareUrl = 'https://share.naver.com/web/shareView?url=' + url + '&title=' + text;
-            else if (type === 'band') shareUrl = 'https://www.band.us/plugin/share?body=' + text + '&route=' + url;
+            else if (type === 'band') shareUrl = 'https://www.band.us/plugin/share?body=' + encodeURIComponent(title + '\n' + pageUrl) + '&route=' + url;
             else if (type === 'line') shareUrl = 'https://social-plugins.line.me/lineit/share?url=' + url;
-            if (shareUrl) window.open(shareUrl, '_blank', 'width=600,height=500');
+            if (shareUrl) window.open(shareUrl, '_blank');
         }
 
         // ═══════════════════════════════
