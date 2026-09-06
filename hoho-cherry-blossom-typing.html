@@ -2982,41 +2982,34 @@
     </section>
     <script>
         function snsShare(type){
-            var shareUrl   = encodeURIComponent(window.location.href);
-            var shareTitle = encodeURIComponent(document.title);
-            if(type==='facebook'){
-                window.open('https://www.facebook.com/sharer/sharer.php?u='+shareUrl, 'sns_facebook', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=800,height=600');
-            } else if(type==='x'){
-                window.open('https://twitter.com/intent/tweet?text='+shareTitle+'&url='+shareUrl, 'sns_x', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=500,height=650');
-            } else if(type==='naver'){
-                window.open('https://share.naver.com/web/shareView.nhn?url='+shareUrl+'&title='+shareTitle, 'sns_naver', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=750,height=600');
-            } else if(type==='band'){
-                window.open('https://band.us/plugin/share?url='+shareUrl+'&title='+shareTitle, 'sns_band', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=750,height=700');
-            } else if(type==='line'){
-                window.open('https://social-plugins.line.me/lineit/share?url='+shareUrl+'&text='+shareTitle, 'sns_line', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=750,height=700');
-            } else if(type==='kakaot'){
-                if(window.Kakao && window.Kakao.isInitialized && window.Kakao.isInitialized()){
-                    var _descEl = document.querySelector('meta[name="description"]');
-                    Kakao.Share.sendDefault({
-                        objectType: 'feed',
-                        content: {
-                            title: document.title.split(' - ')[0],
-                            description: _descEl ? _descEl.content : '',
-                            imageUrl: 'https://hohoplaylab.com/data/game3.png',
-                            link: { mobileWebUrl: window.location.href, webUrl: window.location.href }
-                        },
-                        buttons: [
-                            { title: '나도 해보기', link: { mobileWebUrl: window.location.href, webUrl: window.location.href } }
-                        ]
-                    });
-                } else if(navigator.clipboard){
-                    navigator.clipboard.writeText(window.location.href).then(function(){
-                        alert('링크가 복사되었습니다. 카카오톡에 붙여넣어 공유해주세요!');
-                    }).catch(function(){ alert('카카오톡 공유는 아직 준비 중입니다.'); });
-                } else {
-                    alert('카카오톡 공유는 아직 준비 중입니다.');
+            // 검증된 최종 버전 (축제 지도에서 발견/수정한 문제 반영):
+            // - 카카오톡: 모바일은 OS 공유시트, PC는 카드 방식이 엉뚱한 페이지로 새는 문제가
+            //   있어 링크를 직접 보여주는 방식(prompt) 사용
+            // - 밴드: url/title만으로는 게시글 본문에 링크가 안 붙어서 본문 텍스트에 직접 포함
+            // - 팝업 크기 지정 제거 (모바일에서 팝업 차단 대상으로 취급되는 문제 방지)
+            var pageUrl = window.location.href;
+            var shareUrl = encodeURIComponent(pageUrl);
+            var title = document.title;
+            var shareTitle = encodeURIComponent(title);
+
+            if (type === 'kakaot') {
+                var isMobileDevice = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+                if (isMobileDevice && navigator.share) {
+                    navigator.share({ title: title, url: pageUrl }).catch(function () {});
+                    return;
                 }
+                prompt('아래 링크를 선택해서 복사한 뒤 카카오톡에 붙여넣어 공유해주세요', pageUrl);
+                return;
             }
+
+            var map = {
+                facebook: 'https://www.facebook.com/sharer/sharer.php?u=' + shareUrl,
+                x: 'https://twitter.com/intent/tweet?text=' + shareTitle + '&url=' + shareUrl,
+                naver: 'https://share.naver.com/web/shareView.nhn?url=' + shareUrl + '&title=' + shareTitle,
+                band: 'https://band.us/plugin/share?body=' + encodeURIComponent(title + '\n' + pageUrl) + '&route=' + shareUrl,
+                line: 'https://social-plugins.line.me/lineit/share?url=' + shareUrl + '&text=' + shareTitle
+            };
+            if (map[type]) window.open(map[type], '_blank');
         }
     </script>
 
