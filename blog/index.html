@@ -1318,4 +1318,48 @@
     //    game1.html / game2.html 내부의 <canvas> 요소에 직접 아래를 추가하세요:
     //    canvas.addEventListener('contextmenu', e => e.preventDefault());
 </script>
+
+<!-- ══════════════ [디버그용] /posts API 직접 확인 도구 ══════════════
+     "ㅋ" 게시글 노출 문제 진단용. 원인 확인 끝나면 이 블록 통째로 삭제하면 됨. -->
+<button id="hp-debug-btn" onclick="hpDebugFetchPosts()" style="position:fixed;bottom:16px;left:16px;z-index:99999;background:#1e293b;color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;opacity:0.85;box-shadow:0 2px 8px rgba(0,0,0,.3)">🐛 /posts 디버그</button>
+<div id="hp-debug-panel" style="display:none;position:fixed;inset:0;z-index:100000;background:rgba(0,0,0,0.85);padding:20px;overflow-y:auto">
+    <div style="max-width:640px;margin:0 auto;background:#0f172a;border-radius:12px;padding:20px;color:#e2e8f0;font-family:'Courier New',monospace;font-size:12px;line-height:1.7">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+            <span style="color:#818cf8;font-weight:900">🐛 /posts API 응답 (실시간)</span>
+            <button onclick="document.getElementById('hp-debug-panel').style.display='none'" style="background:#334155;color:#fff;border:none;border-radius:6px;padding:5px 12px;cursor:pointer;font-size:12px">닫기</button>
+        </div>
+        <div id="hp-debug-content" style="white-space:pre-wrap;word-break:break-all">불러오는 중...</div>
+    </div>
+</div>
+<script>
+async function hpDebugFetchPosts() {
+    const panel = document.getElementById('hp-debug-panel');
+    const content = document.getElementById('hp-debug-content');
+    panel.style.display = 'block';
+    content.textContent = '불러오는 중...';
+    try {
+        const url = 'https://old-rain-16f7.lyh0929mm.workers.dev/posts?_=' + Date.now();
+        const res = await fetch(url, { cache: 'no-store' });
+        const data = await res.json();
+        const posts = data.posts || [];
+        let text = '요청 시각: ' + new Date().toLocaleString('ko-KR') + '\n';
+        text += '요청 URL: ' + url + '\n';
+        text += 'HTTP 상태: ' + res.status + '\n';
+        text += '응답 Cache-Control: ' + (res.headers.get('cache-control') || '(헤더 없음)') + '\n';
+        text += '응답 CF-Cache-Status: ' + (res.headers.get('cf-cache-status') || '(헤더 없음, Cloudflare 캐시 아님)') + '\n';
+        text += 'Age: ' + (res.headers.get('age') || '(없음)') + '\n';
+        text += '총 게시글 수: ' + posts.length + '\n';
+        text += '─────────────────────────\n';
+        posts.forEach(function(p, i) {
+            text += (i + 1) + '. [ID:' + p.id + '] (' + p.category + ') "' + p.title + '"\n';
+            text += '    작성: ' + new Date(p.created_at).toLocaleString('ko-KR') + '\n';
+        });
+        if (!posts.length) text += '(게시글 없음)\n';
+        content.textContent = text;
+    } catch (e) {
+        content.textContent = '요청 실패: ' + e.message;
+    }
+}
+</script>
+
 </body>
