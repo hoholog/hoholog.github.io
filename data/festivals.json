@@ -132,17 +132,6 @@
     "contentid": "604454"
   },
   {
-    "title": "공주 국가유산야행",
-    "lat": "36.4543392909",
-    "lng": "127.1220001033",
-    "startDate": "20260904",
-    "endDate": "20260906",
-    "addr": "충청남도 공주시 우체국길 8",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/69/4091769_image2_1.jpg",
-    "tel": "041-852-8063",
-    "contentid": "2614763"
-  },
-  {
     "title": "관악강감찬축제",
     "lat": "37.4715875501",
     "lng": "126.9587204342",
@@ -462,17 +451,6 @@
     "contentid": "3520705"
   },
   {
-    "title": "달성가족문화축제 YES! 키즈존",
-    "lat": "35.6862027968",
-    "lng": "128.4664210807",
-    "startDate": "20260905",
-    "endDate": "20260906",
-    "addr": "대구광역시 달성군 유가읍 테크노대로6길 20",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/84/4058484_image2_1.jpg",
-    "tel": "053-668-4273",
-    "contentid": "3301281"
-  },
-  {
     "title": "당진해나루황토고구마홍보판촉행사",
     "lat": "36.9237613862",
     "lng": "126.5991904904",
@@ -603,17 +581,6 @@
     "image": "https://tong.visitkorea.or.kr/cms/resource/90/3498990_image2_1.JPG",
     "tel": "061-270-8441",
     "contentid": "574014"
-  },
-  {
-    "title": "무안 황토 갯벌축제",
-    "lat": "35.1022012699",
-    "lng": "126.3336418836",
-    "startDate": "20260829",
-    "endDate": "20260906",
-    "addr": "전남광주통합특별시 무안군 해제면 황토갯벌길 88",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/62/4095062_image2_1.JPG",
-    "tel": "061-450-5473",
-    "contentid": "1953493"
   },
   {
     "title": "무주반딧불축제",
@@ -858,17 +825,6 @@
     "contentid": "2434545"
   },
   {
-    "title": "새활용 페스티벌",
-    "lat": "37.5586120945",
-    "lng": "127.0578225987",
-    "startDate": "20260904",
-    "endDate": "20260906",
-    "addr": "서울특별시 성동구 자동차시장길 49 (용답동)",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/74/4098874_image2_1.jpg",
-    "tel": "070-4289-5542",
-    "contentid": "3348418"
-  },
-  {
     "title": "생거진천 문화축제",
     "lat": "36.8589370000",
     "lng": "127.4462880000",
@@ -1032,17 +988,6 @@
     "image": "https://tong.visitkorea.or.kr/cms/resource/74/4078274_image2_1.JPG",
     "tel": "052-290-3541",
     "contentid": "3501104"
-  },
-  {
-    "title": "성북 책모꼬지 북페스티벌",
-    "lat": "37.5894401686",
-    "lng": "127.0167700255",
-    "startDate": "20260906",
-    "endDate": "20260906",
-    "addr": "서울특별시 성북구 보문로 168 (삼선동5가)",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/11/4104011_image2_1.jpg",
-    "tel": "02-6951-2012",
-    "contentid": "2434313"
   },
   {
     "title": "세계유산 조선왕릉축전",
@@ -1408,17 +1353,6 @@
     "contentid": "2558866"
   },
   {
-    "title": "예산황새축제",
-    "lat": "36.5430163206",
-    "lng": "126.7970564001",
-    "startDate": "20260905",
-    "endDate": "20260906",
-    "addr": "충청남도 예산군 광시면 시목대리길 62-19",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/32/4094932_image2_1.png",
-    "tel": "041-339-8367",
-    "contentid": "2843521"
-  },
-  {
     "title": "오슬로우 빈티지 마켓",
     "lat": "37.4727889015",
     "lng": "126.6206091372",
@@ -1463,17 +1397,6 @@
     "contentid": "2433596"
   },
   {
-    "title": "왜관 홀리 페스티벌",
-    "lat": "35.9877833495",
-    "lng": "128.4014504193",
-    "startDate": "20260904",
-    "endDate": "20260906",
-    "addr": "경상북도 칠곡군 왜관읍 관문로 61",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/90/4092590_image2_1.jpg",
-    "tel": "054-979-6087",
-    "contentid": "3486887"
-  },
-  {
     "title": "울산고래축제",
     "lat": "35.5031615190",
     "lng": "129.3808069186",
@@ -1483,17 +1406,6 @@
     "image": "https://tong.visitkorea.or.kr/cms/resource/98/3572398_image2_1.jpg",
     "tel": "052-270-9324",
     "contentid": "553263"
-  },
-  {
-    "title": "원주 국가유산야행",
-    "lat": "37.3483905496",
-    "lng": "127.9500706771",
-    "startDate": "20260904",
-    "endDate": "20260906",
-    "addr": "강원특별자치도 원주시 원일로 77 (일산동)",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/20/4106120_image2_1.jpg",
-    "tel": "033-764-3794",
-    "contentid": "4106106"
   },
   {
     "title": "웰컴투신관동",
@@ -1760,17 +1672,6 @@
     "contentid": "3528062"
   },
   {
-    "title": "제22회 농촌우수마당극큰잔치",
-    "lat": "36.7212362728",
-    "lng": "127.6012913106",
-    "startDate": "20260904",
-    "endDate": "20260906",
-    "addr": "충청북도 청주시 청원구 내수읍 초정약수로 851",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/38/4106138_image2_1.jpg",
-    "tel": "043-211-0752",
-    "contentid": "3343694"
-  },
-  {
     "title": "제24회 동강국제사진제",
     "lat": "37.1819133415",
     "lng": "128.4614563757",
@@ -1881,17 +1782,6 @@
     "contentid": "229054"
   },
   {
-    "title": "직지문화축제",
-    "lat": "36.6429424201",
-    "lng": "127.4722198763",
-    "startDate": "20260904",
-    "endDate": "20260906",
-    "addr": "충청북도 청주시 흥덕구 직지대로 713 (운천동)",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/80/4083180_image2_1.JPG",
-    "tel": "043-201-3666",
-    "contentid": "3305165"
-  },
-  {
     "title": "진안홍삼축제",
     "lat": "35.7730393521",
     "lng": "127.4162448689",
@@ -1912,17 +1802,6 @@
     "image": "https://tong.visitkorea.or.kr/cms/resource/57/4082657_image2_1.png",
     "tel": "055-761-9111, 055-755-9111",
     "contentid": "506926"
-  },
-  {
-    "title": "진주의 수호자들",
-    "lat": "35.1879338891",
-    "lng": "128.0858237357",
-    "startDate": "20260814",
-    "endDate": "20260906",
-    "addr": "경상남도 진주시 강남로 287 (강남동)",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/79/4096279_image2_1.jpg",
-    "tel": "0507-1393-7113",
-    "contentid": "3542294"
   },
   {
     "title": "차 없는 잠수교 뚜벅뚜벅축제",
@@ -2110,17 +1989,6 @@
     "image": "https://tong.visitkorea.or.kr/cms/resource/21/4058721_image2_1.png",
     "tel": "031-259-4724",
     "contentid": "4058556"
-  },
-  {
-    "title": "케미스트릿 강남역 페스티벌",
-    "lat": "37.4995536184",
-    "lng": "127.0257523660",
-    "startDate": "20260905",
-    "endDate": "20260906",
-    "addr": "서울특별시 서초구 서초대로77길 17 (서초동)",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/64/3553464_image2_1.jpg",
-    "tel": "02-2178-9182",
-    "contentid": "3383832"
   },
   {
     "title": "트레저헌터 in 진안",
@@ -2739,17 +2607,6 @@
     "contentid": "1074568"
   },
   {
-    "title": "2026 천안 K-컬처박람회",
-    "lat": "36.7773487289",
-    "lng": "127.2325927551",
-    "startDate": "20260902",
-    "endDate": "20260906",
-    "addr": "충청남도 천안시 동남구 목천읍 독립기념관로 1",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/10/4020710_image2_1.jpg",
-    "tel": "041-521-3411041-521-3405",
-    "contentid": "2996478"
-  },
-  {
     "title": "2026 충청남도 드론 페스타",
     "lat": "36.6575008361",
     "lng": "126.6730682816",
@@ -2781,17 +2638,6 @@
     "image": "https://tong.visitkorea.or.kr/cms/resource/64/4102264_image2_1.jpg",
     "tel": "031-956-8311",
     "contentid": "2999418"
-  },
-  {
-    "title": "2026 헬로메이커",
-    "lat": "35.2045970007",
-    "lng": "129.2127018203",
-    "startDate": "20260905",
-    "endDate": "20260906",
-    "addr": "부산광역시 기장군 기장읍 동부산관광6로 59",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/37/4103837_image2_1.jpg",
-    "tel": "1422-23",
-    "contentid": "2560161"
   },
   {
     "title": "2026 화성행궁 야간개장",
