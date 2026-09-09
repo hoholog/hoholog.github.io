@@ -133,7 +133,7 @@
             .map-wrapper { order: 2; flex: 1 1 auto; }
         }
     </style>
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9e0536bde5120d8fcdd09c780e431ea3&libraries=clusterer"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9e0536bde5120d8fcdd09c780e431ea3&libraries=clusterer,services"></script>
 </head>
 <body>
 
@@ -180,9 +180,13 @@
                 <option value="park">🌳 수목원/공원</option>
             </select>
         </div>
-        <button type="button" id="gpsBtn" onclick="useMyLocation()" style="width:100%; margin-bottom:14px; padding:9px; border:1.5px solid #e2e8f0; border-radius:10px; background:#fff; color:#334155; font-weight:700; font-size:13px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;">
+        <button type="button" id="gpsBtn" onclick="useMyLocation()" style="width:100%; margin-bottom:8px; padding:9px; border:1.5px solid #e2e8f0; border-radius:10px; background:#fff; color:#334155; font-weight:700; font-size:13px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;">
             📍 내 주변으로 보기
         </button>
+        <div style="display:flex; gap:6px; margin-bottom:14px;">
+            <input type="text" id="locationSearchInput" placeholder="위치가 안 맞으면 지역명 직접 입력 (예: 인천 계양구)" style="flex:1; padding:8px 10px; border:1.5px solid #e2e8f0; border-radius:10px; font-size:12px; box-sizing:border-box;" onkeydown="if(event.key==='Enter'){searchByLocationName();}">
+            <button type="button" onclick="searchByLocationName()" style="padding:8px 14px; border:none; border-radius:10px; background:#334155; color:#fff; font-weight:700; font-size:12px; cursor:pointer; white-space:nowrap;">검색</button>
+        </div>
         <ul class="today-list">
             <!-- TODAY_FESTIVALS_START -->
             <li class="today-empty">축제 정보를 불러오는 중입니다...</li>
@@ -730,12 +734,7 @@
         const btn = document.getElementById('gpsBtn');
         if (gpsModeActive) {
             // 다시 누르면 해제하고 일반 지역 보기로 복귀
-            gpsModeActive = false;
-            myLocation = null;
-            btn.textContent = '📍 내 주변으로 보기';
-            btn.style.background = '#fff';
-            btn.style.color = '#334155';
-            filterRegion(currentRegionKey === 'all' ? 'all' : currentRegionKey);
+            deactivateNearbyMode();
             return;
         }
         if (!navigator.geolocation) {
@@ -746,17 +745,8 @@
         btn.disabled = true;
         navigator.geolocation.getCurrentPosition(
             function (pos) {
-                myLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-                gpsModeActive = true;
                 btn.disabled = false;
-                btn.textContent = '✕ 내 주변 보기 해제';
-                btn.style.background = '#eef2ff';
-                btn.style.color = '#4f46e5';
-                document.getElementById('regionSelectPanel').value = 'all';
-                currentRegionKey = 'all';
-                renderNearbyPanel();
-                map.setCenter(new kakao.maps.LatLng(myLocation.lat, myLocation.lng));
-                map.setLevel(7);
+                activateNearbyMode(pos.coords.latitude, pos.coords.longitude);
             },
             function () {
                 btn.disabled = false;
@@ -765,6 +755,62 @@
             },
             { enableHighAccuracy: true, timeout: 10000 }
         );
+    }
+
+    // 지역명을 직접 입력해서 위치를 찾는다 (GPS 정확도가 떨어질 때의 대안).
+    // 카카오맵 services 라이브러리의 주소 검색(Geocoder)과 키워드 검색을 함께 시도해서,
+    // "인천 계양구"처럼 정확한 주소든 "코엑스"처럼 장소명이든 웬만하면 찾히게 한다.
+    const geocoder = (typeof kakao !== 'undefined' && kakao.maps.services) ? new kakao.maps.services.Geocoder() : null;
+    const placesSearch = (typeof kakao !== 'undefined' && kakao.maps.services) ? new kakao.maps.services.Places() : null;
+
+    function searchByLocationName() {
+        const input = document.getElementById('locationSearchInput');
+        const keyword = input.value.trim();
+        if (!keyword) { input.focus(); return; }
+        if (!geocoder || !placesSearch) {
+            alert('위치 검색 기능을 불러오지 못했습니다. 새로고침 후 다시 시도해주세요.');
+            return;
+        }
+
+        geocoder.addressSearch(keyword, function (result, status) {
+            if (status === kakao.maps.services.Status.OK && result[0]) {
+                activateNearbyMode(parseFloat(result[0].y), parseFloat(result[0].x));
+                return;
+            }
+            // 주소로 못 찾으면 장소명(키워드) 검색으로 한 번 더 시도
+            placesSearch.keywordSearch(keyword, function (data, status2) {
+                if (status2 === kakao.maps.services.Status.OK && data[0]) {
+                    activateNearbyMode(parseFloat(data[0].y), parseFloat(data[0].x));
+                } else {
+                    alert('"' + keyword + '"의 위치를 찾지 못했습니다. 다른 지역명으로 다시 시도해주세요.');
+                }
+            });
+        });
+    }
+
+    // GPS든 지역명 검색이든, 위치가 확정되면 이 함수로 "내 주변 보기" 상태를 켠다.
+    function activateNearbyMode(lat, lng) {
+        myLocation = { lat: lat, lng: lng };
+        gpsModeActive = true;
+        const btn = document.getElementById('gpsBtn');
+        btn.textContent = '✕ 내 주변 보기 해제';
+        btn.style.background = '#eef2ff';
+        btn.style.color = '#4f46e5';
+        document.getElementById('regionSelectPanel').value = 'all';
+        currentRegionKey = 'all';
+        renderNearbyPanel();
+        map.setCenter(new kakao.maps.LatLng(lat, lng));
+        map.setLevel(7);
+    }
+
+    function deactivateNearbyMode() {
+        gpsModeActive = false;
+        myLocation = null;
+        const btn = document.getElementById('gpsBtn');
+        btn.textContent = '📍 내 주변으로 보기';
+        btn.style.background = '#fff';
+        btn.style.color = '#334155';
+        filterRegion(currentRegionKey);
     }
 
     // 현재 선택된 테마·기간에 맞는 항목 중, 내 위치에서 가까운 순으로 최대 10개를 보여준다.
