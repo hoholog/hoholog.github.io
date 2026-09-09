@@ -153,6 +153,7 @@
                     <button type="button" class="period-btn active" data-period="today" onclick="setPeriod('today')">오늘</button>
                     <button type="button" class="period-btn" data-period="month" onclick="setPeriod('month')">이번달</button>
                     <button type="button" class="period-btn" data-period="nextmonth" onclick="setPeriod('nextmonth')">다음달</button>
+                    <button type="button" class="period-btn" data-period="all" onclick="setPeriod('all')">전체 예정</button>
                 </div>
             </div>
             <div style="display:flex; gap:6px;">
@@ -533,6 +534,9 @@
     function matchesPeriod(item, period) {
         if (item.type === 'park') return true; // 상시 개방 장소는 기간 필터 대상이 아님
         if (!item.startDate || !item.endDate) return false;
+        if (period === 'all') {
+            return item.endDate >= TODAY_STR; // 아직 끝나지 않은 것 전부 (오늘/이번달/다음달 범위와 무관)
+        }
         if (period === 'today') {
             return item.startDate <= TODAY_STR && TODAY_STR <= item.endDate;
         }
@@ -684,7 +688,7 @@
         }
 
         if (items.length === 0) {
-            const periodLabel = currentPeriod === 'today' ? '오늘 진행 중인' : (currentPeriod === 'month' ? '이번 달에 열리는' : '다음 달에 열리는');
+            const periodLabel = currentPeriod === 'today' ? '오늘 진행 중인' : (currentPeriod === 'month' ? '이번 달에 열리는' : (currentPeriod === 'nextmonth' ? '다음 달에 열리는' : '예정된'));
             listEl.innerHTML = '<li class="today-empty">' + periodLabel + ' 축제가 없습니다. 다른 조건으로 찾아보세요!</li>';
             return;
         }
