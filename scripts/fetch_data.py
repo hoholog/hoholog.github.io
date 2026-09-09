@@ -669,15 +669,24 @@ def main():
 
     all_map_items = festivals + nature_spots
 
+    # ── 상세페이지 생성을 JSON 저장보다 먼저 한다 ──
+    # 자연관광지는 하루 40건씩만 새로 만들어지므로(API 할당량 보호), 아직 상세페이지가
+    # 없는 곳도 지도에는 항상 나온다. 그런 곳까지 "상세보기" 버튼을 보여주면 클릭 시
+    # 404가 나므로, 실제로 파일이 존재하는지 확인해서 hasDetail로 표시해둔다.
+    generate_detail_pages(festivals)
+    generate_nature_detail_pages(nature_spots)
+
+    detail_dir = os.path.join('festival', 'detail')
+    for it in all_map_items:
+        cid = it.get('contentid')
+        it['hasDetail'] = bool(cid) and os.path.exists(os.path.join(detail_dir, f'{cid}.html'))
+
     # repo 루트 기준 data/ 폴더에 저장 (workflow가 repo 루트에서 scripts/fetch_data.py로 실행하는 것을 전제)
     os.makedirs('data', exist_ok=True)
     with open('data/festivals.json', 'w', encoding='utf-8') as f:
         json.dump(all_map_items, f, ensure_ascii=False, indent=2)
 
     print(f"총 수신 {len(all_items)}건, 진행중/예정 축제 {len(festivals)}건 + 자연관광지 {len(nature_spots)}건 data/festivals.json에 저장 완료.")
-
-    generate_detail_pages(festivals)
-    generate_nature_detail_pages(nature_spots)
 
     update_map_html(all_map_items, TODAY)
 
