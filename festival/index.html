@@ -478,10 +478,14 @@
             }
         });
 
-    function renderMarkers(data) {
-        clusterer.clear();
-        allMarkers = [];
+    // [성능] 필터를 바꿀 때마다 마커를 전부 새로 만들면(생성 + 이벤트 등록), 데이터가
+    // 수백~천 건 단위로 늘어난 지금(축제+자연관광지) 필터 전환마다 눈에 띄게 느려진다.
+    // 그래서 마커는 최초 1회만 만들어 contentid 기준으로 캐시해두고, 이후에는 "어떤
+    // 마커를 보여줄지"만 다시 고르고 clusterer에 다시 addMarkers 하는 식으로 재사용한다.
+    let allMarkersCache = null;
 
+    function buildAllMarkersOnce(data) {
+        allMarkersCache = new Map();
         data.forEach(item => {
             const lat = parseFloat(item.lat);
             const lng = parseFloat(item.lng);
@@ -508,10 +512,21 @@
                 document.getElementById('festivalCard').classList.add('active');
             });
 
-            allMarkers.push(marker);
+            // contentid를 키로 캐시(참조가 아니라 문자열 id 기준이라, GPS 검색처럼
+            // 원본을 복사·가공한 객체가 넘어와도 같은 마커를 정확히 찾아낼 수 있다).
+            allMarkersCache.set(item.contentid || `${lat},${lng}`, marker);
         });
+    }
+
+    function renderMarkers(data) {
+        if (!allMarkersCache) buildAllMarkersOnce(festivalData);
+        clusterer.clear();
+        allMarkers = data
+            .map(item => allMarkersCache.get(item.contentid || `${item.lat},${item.lng}`))
+            .filter(Boolean);
         clusterer.addMarkers(allMarkers);
     }
+
 
     // 기간 판정: 'today'는 오늘 진행중인지, 'month'/'nextmonth'는 그 달과 축제 기간이
     // 겹치는지로 본다 (기존 fetch_data.py의 today_list 필터링과 동일한 today 기준 유지).
@@ -734,7 +749,7 @@
             listEl.innerHTML = '<li class="today-empty">"' + escapeHtml(term) + '"이(가) 포함된 축제를 찾지 못했습니다.</li>';
             return;
         }
-        const sorted = matched.slice().sort(function (a, b) { return (a.endDate || '').localeCompare(b.endDate || ''); });
+        const sorted = matched.slice().sort(function (a, b) { return (a.endDate || '').localeCompare(b.endDate || ''); }).slice(0, 30);
         listEl.innerHTML = sorted.map(function (item) { return buildTodayItemHtml(item, true); }).join('');
         loadOverviewsFor(sorted);
     }
