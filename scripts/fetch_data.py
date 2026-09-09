@@ -284,8 +284,10 @@ def generate_detail_pages(festivals):
                 patched_count += 1
             continue  # 애드센스 보정 외에는 이미 생성된 페이지를 건드리지 않음
 
-        overview = fetch_detail_overview(content_id)
-        intro = fetch_intro_fields(content_id)
+        overview = f.get('overview')  # 수동 등록 축제는 이미 설명이 주어져 있어 TourAPI를 안 부름
+        if overview is None:
+            overview = fetch_detail_overview(content_id)
+        intro = {} if f.get('overview') is not None else fetch_intro_fields(content_id)
         page_html = build_detail_page_html(f, overview, intro)
         with open(out_path, 'w', encoding='utf-8') as fp:
             fp.write(page_html)
@@ -645,6 +647,34 @@ def main():
             'contentid': item.get('contentid', '')
         })
 
+    # ── 수동 등록 축제 (TourAPI에 없는 것을 직접 추가) ──
+    # data/manual_festivals.json에 넣어두면, 자동 수집된 축제와 완전히 동일한 방식으로
+    # 지도·목록·상세페이지·사이트맵에 반영된다. endDate가 지나면 다른 축제와 똑같이
+    # 자동으로 빠지므로, 한번 등록해두면 따로 지우지 않아도 된다.
+    manual_path = os.path.join('data', 'manual_festivals.json')
+    if os.path.exists(manual_path):
+        with open(manual_path, 'r', encoding='utf-8') as fp:
+            manual_list = json.load(fp)
+        for m in manual_list:
+            end_date = m.get('endDate', '')
+            if end_date and end_date < TODAY:
+                continue  # 종료된 수동 축제도 자동으로 제외
+            entry = {
+                'type': 'festival',
+                'title': m.get('title'),
+                'lat': m.get('lat'),
+                'lng': m.get('lng'),
+                'startDate': m.get('startDate'),
+                'endDate': end_date,
+                'addr': m.get('addr', ''),
+                'image': m.get('image', ''),
+                'tel': m.get('tel', ''),
+                'contentid': m.get('contentid'),
+                'overview': m.get('overview', '')
+            }
+            festivals.append(entry)
+        print(f"수동 등록 축제 {len(manual_list)}건 확인, 이 중 유효 기간 내: {sum(1 for m in manual_list if not m.get('endDate') or m.get('endDate') >= TODAY)}건 반영")
+
     # ── 자연관광지(수목원·공원·자연휴양림) — 날짜가 없는 상시 개방 장소라
     # startDate/endDate를 비워두고, type:'park'로 표시해 map.html이 기간 필터를
     # 건너뛰고 항상 노출하도록 한다.
@@ -729,6 +759,25 @@ def main():
             'endDate': '',
             'contentid': content_id,
         })
+
+    # 수동 등록 축제도 다른 축제와 동일한 유예기간 규칙으로 포함
+    if os.path.exists(manual_path):
+        for m in manual_list:
+            content_id = m.get('contentid', '')
+            end_date = m.get('endDate', '')
+            if not content_id:
+                continue
+            if end_date and end_date < grace_cutoff:
+                continue
+            if not os.path.exists(os.path.join('festival', 'detail', f'{content_id}.html')):
+                continue
+            sitemap_items.append({
+                'title': m.get('title'),
+                'addr': m.get('addr', ''),
+                'startDate': m.get('startDate'),
+                'endDate': end_date,
+                'contentid': content_id,
+            })
 
     build_festival_list_page(sitemap_items)
     update_sitemap(sitemap_items)
