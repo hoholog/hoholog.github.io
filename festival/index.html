@@ -184,21 +184,22 @@
                 <button type="button" class="theme-chip" data-theme="flower" onclick="toggleTheme('flower')">🌷 꽃</button>
                 <button type="button" class="theme-chip" data-theme="park" onclick="toggleTheme('park')">🌳 수목원/공원</button>
             </div>
-            <div style="display:flex; gap:6px;">
-                <input type="text" id="titleSearchInput" placeholder="🔍 축제 이름으로 검색 (예: 머드, 불빛)" style="flex:1; padding:8px 10px; border:1.5px solid #e2e8f0; border-radius:10px; font-size:12px; box-sizing:border-box;" onkeydown="if(event.key==='Enter'){searchByTitle();}">
-                <button type="button" onclick="searchByTitle()" style="padding:8px 14px; border:none; border-radius:10px; background:#4f46e5; color:#fff; font-weight:700; font-size:12px; cursor:pointer; white-space:nowrap;">검색</button>
-            </div>
-            <div id="titleSearchActive" style="display:none; margin-top:6px; font-size:12px; color:#4f46e5; font-weight:700;">
-                검색 중: "<span id="titleSearchTerm"></span>" <button type="button" onclick="clearTitleSearch()" style="border:none; background:none; color:#94a3b8; cursor:pointer; font-size:12px; text-decoration:underline; padding:0; margin-left:4px;">지우기</button>
-            </div>
         </div>
         <button type="button" id="gpsBtn" onclick="useMyLocation()" style="width:100%; margin-bottom:8px; padding:9px; border:1.5px solid #e2e8f0; border-radius:10px; background:#fff; color:#334155; font-weight:700; font-size:13px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;">
             📍 내 주변으로 보기
         </button>
-        <div style="display:flex; gap:6px; margin-bottom:14px;">
-            <input type="text" id="locationSearchInput" placeholder="위치가 안 맞으면 지역명 직접 입력 (예: 인천 계양구)" style="flex:1; padding:8px 10px; border:1.5px solid #e2e8f0; border-radius:10px; font-size:12px; box-sizing:border-box;" onkeydown="if(event.key==='Enter'){searchByLocationName();}">
-            <button type="button" onclick="searchByLocationName()" style="padding:8px 14px; border:none; border-radius:10px; background:#334155; color:#fff; font-weight:700; font-size:12px; cursor:pointer; white-space:nowrap;">검색</button>
+        <div style="display:flex; gap:4px; background:#f1f5f9; padding:3px; border-radius:10px; margin-bottom:6px;">
+            <button type="button" class="search-mode-btn active" data-mode="location" onclick="setSearchMode('location')" style="flex:1; border:none; background:#fff; color:#334155; padding:6px; border-radius:8px; font-size:12px; font-weight:700; cursor:pointer; box-shadow:0 1px 2px rgba(0,0,0,.08);">📍 위치</button>
+            <button type="button" class="search-mode-btn" data-mode="title" onclick="setSearchMode('title')" style="flex:1; border:none; background:transparent; color:#64748b; padding:6px; border-radius:8px; font-size:12px; font-weight:700; cursor:pointer;">🔍 이름</button>
         </div>
+        <div style="display:flex; gap:6px;">
+            <input type="text" id="unifiedSearchInput" placeholder="위치가 안 맞으면 지역명 직접 입력 (예: 인천 계양구)" style="flex:1; padding:8px 10px; border:1.5px solid #e2e8f0; border-radius:10px; font-size:12px; box-sizing:border-box;" onkeydown="if(event.key==='Enter'){runUnifiedSearch();}">
+            <button type="button" onclick="runUnifiedSearch()" style="padding:8px 14px; border:none; border-radius:10px; background:#334155; color:#fff; font-weight:700; font-size:12px; cursor:pointer; white-space:nowrap;">검색</button>
+        </div>
+        <div id="titleSearchActive" style="display:none; margin-top:6px; font-size:12px; color:#4f46e5; font-weight:700;">
+            검색 중: "<span id="titleSearchTerm"></span>" <button type="button" onclick="clearTitleSearch()" style="border:none; background:none; color:#94a3b8; cursor:pointer; font-size:12px; text-decoration:underline; padding:0; margin-left:4px;">지우기</button>
+        </div>
+        <div style="margin-bottom:14px;"></div>
         <ul class="today-list">
             <!-- TODAY_FESTIVALS_START -->
             <li class="today-empty">축제 정보를 불러오는 중입니다...</li>
@@ -732,8 +733,29 @@
     // 별개로, 검색이 활성화되어 있는 동안은 검색 결과만 보여준다.
     let titleSearchTerm = '';
 
+    let searchMode = 'location'; // 'location' | 'title'
+
+    function setSearchMode(mode) {
+        searchMode = mode;
+        const input = document.getElementById('unifiedSearchInput');
+        document.querySelectorAll('.search-mode-btn').forEach(function (btn) {
+            const isActive = btn.getAttribute('data-mode') === mode;
+            btn.style.background = isActive ? '#fff' : 'transparent';
+            btn.style.color = isActive ? '#334155' : '#64748b';
+            btn.style.boxShadow = isActive ? '0 1px 2px rgba(0,0,0,.08)' : 'none';
+        });
+        input.placeholder = mode === 'location'
+            ? '위치가 안 맞으면 지역명 직접 입력 (예: 인천 계양구)'
+            : '🔍 축제 이름으로 검색 (예: 머드, 불빛)';
+    }
+
+    function runUnifiedSearch() {
+        if (searchMode === 'location') searchByLocationName();
+        else searchByTitle();
+    }
+
     function searchByTitle() {
-        const input = document.getElementById('titleSearchInput');
+        const input = document.getElementById('unifiedSearchInput');
         const term = input.value.trim();
         if (!term) return;
         titleSearchTerm = term;
@@ -760,7 +782,7 @@
 
     function clearTitleSearch() {
         titleSearchTerm = '';
-        document.getElementById('titleSearchInput').value = '';
+        document.getElementById('unifiedSearchInput').value = '';
         document.getElementById('titleSearchActive').style.display = 'none';
         if (gpsModeActive) {
             renderNearbyPanel();
@@ -852,7 +874,7 @@
     const placesSearch = (typeof kakao !== 'undefined' && kakao.maps.services) ? new kakao.maps.services.Places() : null;
 
     function searchByLocationName() {
-        const input = document.getElementById('locationSearchInput');
+        const input = document.getElementById('unifiedSearchInput');
         const keyword = input.value.trim();
         if (!keyword) { input.focus(); return; }
         if (!geocoder || !placesSearch) {
