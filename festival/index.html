@@ -159,7 +159,7 @@
                 <button type="button" onclick="shareFestivalMap('band')" aria-label="밴드 공유" style="width:28px;height:28px;border-radius:50%;border:none;cursor:pointer;background:#00c73c;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:9px;">밴드</button>
             </div>
         </div>
-        <div style="display:flex; gap:8px; margin-bottom:14px;">
+        <div style="display:flex; gap:8px; margin-bottom:10px;">
             <select id="regionSelectPanel" class="region-select panel-region-select" style="flex:1; margin-bottom:0;" onchange="filterRegion(this.value)">
                 <option value="all">전국 전체보기</option>
                 <option value="seoul">서울 / 인천 / 경기도</option>
@@ -180,6 +180,9 @@
                 <option value="park">🌳 수목원/공원</option>
             </select>
         </div>
+        <button type="button" id="gpsBtn" onclick="useMyLocation()" style="width:100%; margin-bottom:14px; padding:9px; border:1.5px solid #e2e8f0; border-radius:10px; background:#fff; color:#334155; font-weight:700; font-size:13px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;">
+            📍 내 주변으로 보기
+        </button>
         <ul class="today-list">
             <!-- TODAY_FESTIVALS_START -->
             <li class="today-empty">축제 정보를 불러오는 중입니다...</li>
@@ -452,6 +455,12 @@
             renderMarkers(data);
             // 기본 화면(전국 전체보기)의 "오늘의 축제" 목록은 서버가 미리 만들어둔 정적
             // HTML을 그대로 두고(SEO용), 사용자가 지역을 바꿀 때만 아래 renderTodayPanel이 동작한다.
+            // 다만 서버 쪽 갱신이 그날 실패해서 "불러오는 중..." 자리표시가 그대로 남아있는
+            // 경우를 대비해, 그 상태를 감지하면 지금 받은 데이터로 즉시 한 번 더 그려준다.
+            const listEl = document.querySelector('.today-list');
+            if (listEl && listEl.textContent.includes('불러오는 중')) {
+                renderTodayPanel('all');
+            }
         });
 
     function renderMarkers(data) {
@@ -558,7 +567,7 @@
         return inRegion.slice(0, 5);
     }
 
-    function buildTodayItemHtml(item, showRegionTag) {
+    function buildTodayItemHtml(item, showRegionTag, distanceKm) {
         const lat = item.lat || '';
         const lng = item.lng || '';
         const title = escapeHtml(item.title);
@@ -566,9 +575,11 @@
         const dateLine = (item.startDate && item.endDate)
             ? '<span class="today-date">📅 ' + formatDateRange(item.startDate, item.endDate) + '</span>'
             : '<span class="today-date">🌳 상시 개방</span>';
-        const regionTag = (showRegionTag && item._regionKey)
-            ? '<span class="today-region">' + escapeHtml(REGION_LABELS[item._regionKey] || '') + '</span>'
-            : '';
+        const regionTag = (typeof distanceKm === 'number')
+            ? '<span class="today-region">📍 ' + distanceKm.toFixed(1) + 'km</span>'
+            : (showRegionTag && item._regionKey)
+                ? '<span class="today-region">' + escapeHtml(REGION_LABELS[item._regionKey] || '') + '</span>'
+                : '';
         const linkParts = [];
         if (item.contentid) {
             linkParts.push('<a class="today-map-link" href="/festival/detail/' + encodeURIComponent(item.contentid) + '.html">상세보기 →</a>');
@@ -648,13 +659,21 @@
         document.querySelectorAll('.period-btn').forEach(function (btn) {
             btn.classList.toggle('active', btn.getAttribute('data-period') === period);
         });
-        renderTodayPanel(currentRegionKey);
+        if (gpsModeActive) {
+            renderNearbyPanel();
+        } else {
+            renderTodayPanel(currentRegionKey);
+        }
     }
 
     function setTheme(theme) {
         currentTheme = theme;
-        applyRegionAndThemeToMarkers(currentRegionKey);
-        renderTodayPanel(currentRegionKey);
+        if (gpsModeActive) {
+            renderNearbyPanel();
+        } else {
+            applyRegionAndThemeToMarkers(currentRegionKey);
+            renderTodayPanel(currentRegionKey);
+        }
     }
 
     function syncRegionSelectors(key) {
@@ -683,8 +702,97 @@
     function filterRegion(key) {
         currentRegionKey = key;
         syncRegionSelectors(key);
+        if (gpsModeActive) {
+            gpsModeActive = false;
+            myLocation = null;
+            const btn = document.getElementById('gpsBtn');
+            if (btn) { btn.textContent = '📍 내 주변으로 보기'; btn.style.background = '#fff'; btn.style.color = '#334155'; }
+        }
         applyRegionAndThemeToMarkers(key);
         renderTodayPanel(key);
+    }
+
+    // ── 내 주변으로 보기 (GPS) ──────────────────────────────────────
+    let myLocation = null;
+    let gpsModeActive = false;
+
+    function haversineDistanceKm(lat1, lng1, lat2, lng2) {
+        const R = 6371;
+        const toRad = function (deg) { return deg * Math.PI / 180; };
+        const dLat = toRad(lat2 - lat1);
+        const dLng = toRad(lng2 - lng1);
+        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+            + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
+        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
+
+    function useMyLocation() {
+        const btn = document.getElementById('gpsBtn');
+        if (gpsModeActive) {
+            // 다시 누르면 해제하고 일반 지역 보기로 복귀
+            gpsModeActive = false;
+            myLocation = null;
+            btn.textContent = '📍 내 주변으로 보기';
+            btn.style.background = '#fff';
+            btn.style.color = '#334155';
+            filterRegion(currentRegionKey === 'all' ? 'all' : currentRegionKey);
+            return;
+        }
+        if (!navigator.geolocation) {
+            alert('이 브라우저는 위치 정보를 지원하지 않습니다.');
+            return;
+        }
+        btn.textContent = '📍 위치 확인 중...';
+        btn.disabled = true;
+        navigator.geolocation.getCurrentPosition(
+            function (pos) {
+                myLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+                gpsModeActive = true;
+                btn.disabled = false;
+                btn.textContent = '✕ 내 주변 보기 해제';
+                btn.style.background = '#eef2ff';
+                btn.style.color = '#4f46e5';
+                document.getElementById('regionSelectPanel').value = 'all';
+                currentRegionKey = 'all';
+                renderNearbyPanel();
+                map.setCenter(new kakao.maps.LatLng(myLocation.lat, myLocation.lng));
+                map.setLevel(7);
+            },
+            function () {
+                btn.disabled = false;
+                btn.textContent = '📍 내 주변으로 보기';
+                alert('위치 정보를 가져올 수 없습니다. 브라우저의 위치 권한을 허용해주세요.');
+            },
+            { enableHighAccuracy: true, timeout: 10000 }
+        );
+    }
+
+    // 현재 선택된 테마·기간에 맞는 항목 중, 내 위치에서 가까운 순으로 최대 10개를 보여준다.
+    function renderNearbyPanel() {
+        const listEl = document.querySelector('.today-list');
+        if (!listEl || !myLocation) return;
+
+        const nearby = festivalData
+            .filter(function (item) {
+                return matchesPeriod(item, currentPeriod) && matchesTheme(item, currentTheme) && item.lat && item.lng;
+            })
+            .map(function (item) {
+                const d = haversineDistanceKm(myLocation.lat, myLocation.lng, parseFloat(item.lat), parseFloat(item.lng));
+                return Object.assign({}, item, { _distanceKm: d });
+            })
+            .sort(function (a, b) { return a._distanceKm - b._distanceKm; })
+            .slice(0, 10);
+
+        if (nearby.length === 0) {
+            listEl.innerHTML = '<li class="today-empty">내 주변에서 조건에 맞는 결과를 찾지 못했습니다. 다른 테마·기간으로 찾아보세요!</li>';
+            renderMarkers([]);
+            return;
+        }
+
+        listEl.innerHTML = nearby.map(function (item) { return buildTodayItemHtml(item, false, item._distanceKm); }).join('');
+        loadOverviewsFor(nearby);
+        renderMarkers(nearby);
+        fitToMarkers(allMarkers);
     }
 </script>
 
