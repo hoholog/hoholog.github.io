@@ -36,16 +36,21 @@ REGION_LABELS = {
 }
 
 
-def fetch_all_items(max_retries=3):
+def fetch_all_items(mode='festival', max_retries=3):
     """Vercel 프록시(서울 리전)를 통해 TourAPI 데이터를 한 번에 받아온다.
+    mode='nature'면 축제 대신 자연관광지(수목원·공원·자연휴양림)를 가져온다.
 
     festivals.js는 실패해도 항상 JSON({"error": "진짜 이유..."}) 형태로 응답하도록 짜여있다.
     상태코드와 무관하게 항상 본문을 먼저 파싱해서 진짜 원인을 그대로 로그에 남긴다
     (res.raise_for_status()를 먼저 부르면 502 등에서 본문이 버려져 원인을 알 수 없게 된다)."""
+    params = {'mode': mode}
+    if mode == 'festival':
+        params['from'] = SEARCH_FROM
+
     last_error = None
     for attempt in range(1, max_retries + 1):
         try:
-            res = requests.get(PROXY_URL, params={'from': SEARCH_FROM}, timeout=30)
+            res = requests.get(PROXY_URL, params=params, timeout=30)
             try:
                 data = res.json()
             except ValueError:
@@ -62,7 +67,7 @@ def fetch_all_items(max_retries=3):
             last_error = e
 
         wait = 5 * attempt
-        print(f"프록시 호출 실패({attempt}/{max_retries}): {last_error} — {wait}초 후 재시도")
+        print(f"프록시 호출 실패({mode}, {attempt}/{max_retries}): {last_error} — {wait}초 후 재시도")
         if attempt < max_retries:
             time.sleep(wait)
     raise last_error
@@ -290,6 +295,91 @@ def generate_detail_pages(festivals):
     print(f"상세페이지 신규 생성: {new_count}건, 애드센스 코드 보정: {patched_count}건 (festival/detail/)")
 
 
+def build_nature_page_html(spot, overview):
+    """수목원·공원·자연휴양림 1건에 대한 독립 상세페이지를 만든다.
+    축제와 달리 시작/종료일, 주최자, 이용요금 같은 축제 전용 필드가 없어서,
+    contentTypeId와 무관하게 항상 내려오는 공통 정보(개요·주소·전화·지도)만으로 구성한다."""
+    title = html.escape(spot.get('title') or '')
+    addr = html.escape(spot.get('addr') or '')
+    lat = spot.get('lat') or ''
+    lng = spot.get('lng') or ''
+    image = spot.get('image') or ''
+    tel = html.escape(spot.get('tel') or '')
+    overview_html = html.escape(overview) if overview else '설명 정보가 없습니다.'
+
+    map_link_html = ''
+    if lat and lng:
+        map_url = f"https://map.kakao.com/link/map/{quote(spot.get('title') or '관광지')},{lat},{lng}"
+        map_link_html = f'<a href="{map_url}" target="_blank" rel="noopener" class="detail-link">지도에서 보기 →</a>'
+
+    image_html = f'<img src="{html.escape(image)}" alt="{title}" class="detail-image">' if image else ''
+    tel_html = f'<p class="detail-row"><strong>전화</strong> {tel}</p>' if tel else ''
+
+    return f'''<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{title} - 전국 자연공원·수목원 지도</title>
+<meta name="description" content="{title} | {addr}">
+<link rel="icon" href="/favicon.svg">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7990191075290055" crossorigin="anonymous"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{{font-family:'Noto Sans KR',sans-serif;max-width:640px;margin:0 auto;padding:20px 16px;color:#1e293b}}
+.detail-image{{width:100%;border-radius:14px;margin-bottom:16px;object-fit:cover;max-height:320px}}
+.detail-row{{margin:6px 0;font-size:14px;color:#475569}}
+.detail-link{{display:inline-block;margin-top:14px;color:#059669;font-weight:700;text-decoration:underline}}
+.back-link{{display:inline-block;margin-top:24px;color:#059669;font-weight:700;text-decoration:none}}
+</style>
+</head>
+<body>
+{image_html}
+<h1 style="font-size:1.4rem;font-weight:900;margin-bottom:6px">{title}</h1>
+<p class="detail-row"><strong>주소</strong> {addr}</p>
+{tel_html}
+{map_link_html}
+<div style="margin-top:20px;padding-top:16px;border-top:1px solid #e2e8f0;font-size:14px;line-height:1.8;color:#334155">{overview_html}</div>
+<a class="back-link" href="/festival/">← 지도에서 보기</a>
+</body>
+</html>'''
+
+
+def generate_nature_detail_pages(spots):
+    """자연관광지 상세페이지를 생성한다. generate_detail_pages()와 동일한 원칙
+    (이미 있는 페이지는 재생성하지 않고, 애드센스 코드 누락만 보정)을 따른다."""
+    detail_dir = os.path.join('festival', 'detail')
+    os.makedirs(detail_dir, exist_ok=True)
+
+    ADSENSE_TAG = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7990191075290055" crossorigin="anonymous"></script>'
+
+    new_count = 0
+    patched_count = 0
+    for spot in spots:
+        content_id = spot.get('contentid')
+        if not content_id:
+            continue
+        out_path = os.path.join(detail_dir, f'{content_id}.html')
+        if os.path.exists(out_path):
+            with open(out_path, 'r', encoding='utf-8') as fp:
+                existing = fp.read()
+            if ADSENSE_TAG not in existing and '</head>' in existing:
+                existing = existing.replace('</head>', f'{ADSENSE_TAG}\n</head>')
+                with open(out_path, 'w', encoding='utf-8') as fp:
+                    fp.write(existing)
+                patched_count += 1
+            continue
+
+        overview = fetch_detail_overview(content_id)
+        page_html = build_nature_page_html(spot, overview)
+        with open(out_path, 'w', encoding='utf-8') as fp:
+            fp.write(page_html)
+        new_count += 1
+        time.sleep(0.3)
+
+    print(f"자연관광지 상세페이지 신규 생성: {new_count}건, 애드센스 코드 보정: {patched_count}건")
+
+
 def get_region_key(addr):
     """주소로부터 지역 키를 판정한다 (map.html의 필터 로직과 동일한 기준)."""
     for key, keywords in REGION_KEYWORDS:
@@ -320,10 +410,11 @@ def build_festival_list_page(list_items):
         for f in items:
             title = html.escape(f.get('title') or '')
             addr = html.escape(f.get('addr') or '')
-            date_label = f"{fmt_date(f.get('startDate'))} ~ {fmt_date(f.get('endDate'))}"
+            start, end = f.get('startDate'), f.get('endDate')
+            date_part = f"{fmt_date(start)} ~ {fmt_date(end)} · " if start or end else ''
             content_id = f.get('contentid')
             link = f'/festival/detail/{content_id}.html' if content_id else '#'
-            lines.append(f'<li><a href="{link}">{title}</a> — {date_label} · {addr}</li>')
+            lines.append(f'<li><a href="{link}">{title}</a> — {date_part}{addr}</li>')
         lines.append('</ul>')
         return '\n'.join(lines)
 
@@ -522,7 +613,7 @@ def update_map_html(festivals, today):
 
 
 def main():
-    all_items = fetch_all_items()
+    all_items = fetch_all_items('festival')
 
     festivals = []
     for item in all_items:
@@ -531,6 +622,7 @@ def main():
             continue  # 이미 종료된 축제는 제외
 
         festivals.append({
+            'type': 'festival',
             'title': item.get('title'),
             'lat': item.get('mapy'),
             'lng': item.get('mapx'),
@@ -542,16 +634,41 @@ def main():
             'contentid': item.get('contentid', '')
         })
 
+    # ── 자연관광지(수목원·공원·자연휴양림) — 날짜가 없는 상시 개방 장소라
+    # startDate/endDate를 비워두고, type:'park'로 표시해 map.html이 기간 필터를
+    # 건너뛰고 항상 노출하도록 한다.
+    nature_spots = []
+    try:
+        nature_items = fetch_all_items('nature')
+        for item in nature_items:
+            nature_spots.append({
+                'type': 'park',
+                'title': item.get('title'),
+                'lat': item.get('mapy'),
+                'lng': item.get('mapx'),
+                'startDate': '',
+                'endDate': '',
+                'addr': item.get('addr1', ''),
+                'image': item.get('firstimage', ''),
+                'tel': item.get('tel', ''),
+                'contentid': item.get('contentid', '')
+            })
+    except Exception as e:
+        print(f"자연관광지 수집 실패, 이번 실행에서는 건너뜁니다: {e}")
+
+    all_map_items = festivals + nature_spots
+
     # repo 루트 기준 data/ 폴더에 저장 (workflow가 repo 루트에서 scripts/fetch_data.py로 실행하는 것을 전제)
     os.makedirs('data', exist_ok=True)
     with open('data/festivals.json', 'w', encoding='utf-8') as f:
-        json.dump(festivals, f, ensure_ascii=False, indent=2)
+        json.dump(all_map_items, f, ensure_ascii=False, indent=2)
 
-    print(f"총 수신 {len(all_items)}건, 진행중/예정 축제 {len(festivals)}건 data/festivals.json에 저장 완료.")
+    print(f"총 수신 {len(all_items)}건, 진행중/예정 축제 {len(festivals)}건 + 자연관광지 {len(nature_spots)}건 data/festivals.json에 저장 완료.")
 
     generate_detail_pages(festivals)
+    generate_nature_detail_pages(nature_spots)
 
-    update_map_html(festivals, TODAY)
+    update_map_html(all_map_items, TODAY)
 
     # ── 사이트맵 / 크롤러용 목록 페이지 ──────────────────────────────
     # 지도 마커 안의 상세 링크는 JS로 그려져 검색봇이 발견하지 못하므로,
@@ -575,6 +692,21 @@ def main():
             'addr': item.get('addr1', ''),
             'startDate': item.get('eventstartdate'),
             'endDate': end_date,
+            'contentid': content_id,
+        })
+
+    # 자연관광지는 상시 개방 장소라 기간 제한 없이 상세페이지가 존재하는 것만 그대로 포함
+    for spot in nature_spots:
+        content_id = spot.get('contentid', '')
+        if not content_id:
+            continue
+        if not os.path.exists(os.path.join('festival', 'detail', f'{content_id}.html')):
+            continue
+        sitemap_items.append({
+            'title': spot.get('title'),
+            'addr': spot.get('addr', ''),
+            'startDate': '',
+            'endDate': '',
             'contentid': content_id,
         })
 
