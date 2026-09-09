@@ -345,9 +345,14 @@ body{{font-family:'Noto Sans KR',sans-serif;max-width:640px;margin:0 auto;paddin
 </html>'''
 
 
-def generate_nature_detail_pages(spots):
+def generate_nature_detail_pages(spots, max_new=40):
     """자연관광지 상세페이지를 생성한다. generate_detail_pages()와 동일한 원칙
-    (이미 있는 페이지는 재생성하지 않고, 애드센스 코드 누락만 보정)을 따른다."""
+    (이미 있는 페이지는 재생성하지 않고, 애드센스 코드 누락만 보정)을 따른다.
+
+    max_new: 이번 실행에서 새로 만들 상세페이지 개수 상한. 축제(searchFestival2)와
+    자연관광지(areaBasedList2+detailCommon2)가 같은 TourAPI 일일 할당량을 나눠 쓰기 때문에,
+    첫 실행처럼 한꺼번에 수백 건을 만들려고 하면 "일일 서비스 요청제한 초과"로 실패한다.
+    한 번에 조금씩만 만들고 나머지는 다음 실행(하루 3회)에서 이어서 만들도록 제한한다."""
     detail_dir = os.path.join('festival', 'detail')
     os.makedirs(detail_dir, exist_ok=True)
 
@@ -355,6 +360,7 @@ def generate_nature_detail_pages(spots):
 
     new_count = 0
     patched_count = 0
+    skipped_for_quota = 0
     for spot in spots:
         content_id = spot.get('contentid')
         if not content_id:
@@ -370,6 +376,10 @@ def generate_nature_detail_pages(spots):
                 patched_count += 1
             continue
 
+        if new_count >= max_new:
+            skipped_for_quota += 1
+            continue  # 이번 실행 할당량 소진 — 다음 실행에서 이어서 생성
+
         overview = fetch_detail_overview(content_id)
         page_html = build_nature_page_html(spot, overview)
         with open(out_path, 'w', encoding='utf-8') as fp:
@@ -377,7 +387,8 @@ def generate_nature_detail_pages(spots):
         new_count += 1
         time.sleep(0.3)
 
-    print(f"자연관광지 상세페이지 신규 생성: {new_count}건, 애드센스 코드 보정: {patched_count}건")
+    remaining_note = f", 다음 실행으로 이월: {skipped_for_quota}건" if skipped_for_quota else ""
+    print(f"자연관광지 상세페이지 신규 생성: {new_count}건, 애드센스 코드 보정: {patched_count}건{remaining_note}")
 
 
 def get_region_key(addr):
