@@ -131,6 +131,19 @@
   },
   {
     "type": "festival",
+    "title": "고양 푸드앤비어페스티벌",
+    "lat": "37.6610286707",
+    "lng": "126.7683076192",
+    "startDate": "20260911",
+    "endDate": "20260913",
+    "addr": "경기도 고양시 일산동구 중앙로 1305-56 (장항동)",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/34/4104834_image2_1.jpg",
+    "tel": "031-927-9974",
+    "contentid": "2755115",
+    "hasDetail": true
+  },
+  {
+    "type": "festival",
     "title": "고양행주한우 숯불구이축제",
     "lat": "37.654669772497314",
     "lng": "126.83276387204035",
@@ -144,6 +157,19 @@
   },
   {
     "type": "festival",
+    "title": "고양호수예술축제",
+    "lat": "37.6552847261",
+    "lng": "126.7689082803",
+    "startDate": "20260918",
+    "endDate": "20260920",
+    "addr": "경기도 고양시 일산동구 호수로 595 (장항동)",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/61/4081461_image2_1.jpg",
+    "tel": "1577-7766",
+    "contentid": "1100492",
+    "hasDetail": true
+  },
+  {
+    "type": "festival",
     "title": "고창모양성제",
     "lat": "35.4331479316",
     "lng": "126.7035018266",
@@ -153,6 +179,19 @@
     "image": "https://tong.visitkorea.or.kr/cms/resource/30/3519730_image2_1.jpg",
     "tel": "063-560-2949",
     "contentid": "604454",
+    "hasDetail": true
+  },
+  {
+    "type": "festival",
+    "title": "고흥유자축제",
+    "lat": "34.5750910000",
+    "lng": "127.2326630000",
+    "startDate": "20261112",
+    "endDate": "20261115",
+    "addr": "전남광주통합특별시 고흥군 풍양면 한동리",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/13/4109413_image2_1.png",
+    "tel": "061-830-5442",
+    "contentid": "2872215",
     "hasDetail": true
   },
   {
@@ -573,6 +612,19 @@
   },
   {
     "type": "festival",
+    "title": "달밤에체조 부산 챌린지",
+    "lat": "35.1655426683",
+    "lng": "129.0558397915",
+    "startDate": "20260919",
+    "endDate": "20261107",
+    "addr": "부산광역시 부산진구 시민공원로 73 (범전동)",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/24/4109324_image2_1.jpg",
+    "tel": "070-8065-4592",
+    "contentid": "4109305",
+    "hasDetail": true
+  },
+  {
+    "type": "festival",
     "title": "당진해나루황토고구마홍보판촉행사",
     "lat": "36.9237613862",
     "lng": "126.5991904904",
@@ -677,19 +729,6 @@
   },
   {
     "type": "festival",
-    "title": "동대문구 북 페스티벌",
-    "lat": "37.5743917162",
-    "lng": "127.0398965801",
-    "startDate": "20260912",
-    "endDate": "20260912",
-    "addr": "서울특별시 동대문구 천호대로 145 (용두동)",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/43/4098743_image2_1.jpg",
-    "tel": "070-7742-8871",
-    "contentid": "4098740",
-    "hasDetail": true
-  },
-  {
-    "type": "festival",
     "title": "동대문페스티벌",
     "lat": "37.5663467202",
     "lng": "127.0675592470",
@@ -751,6 +790,19 @@
     "image": "https://tong.visitkorea.or.kr/cms/resource/61/4108761_image2_1.jpg",
     "tel": "031-669-0974",
     "contentid": "1841539",
+    "hasDetail": true
+  },
+  {
+    "type": "festival",
+    "title": "명량대첩축제",
+    "lat": "34.5690469324",
+    "lng": "126.3034327394",
+    "startDate": "20260911",
+    "endDate": "20260913",
+    "addr": "전남광주통합특별시 진도군 군내면 명량대첩로 11",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/71/4100271_image2_1.JPG",
+    "tel": "061-802-2192",
+    "contentid": "607417",
     "hasDetail": true
   },
   {
@@ -946,6 +998,19 @@
     "image": "https://tong.visitkorea.or.kr/cms/resource/80/4093280_image2_1.jpg",
     "tel": "02-2602-8602",
     "contentid": "3492576",
+    "hasDetail": true
+  },
+  {
+    "type": "festival",
+    "title": "부산청년주간",
+    "lat": "35.1086225000",
+    "lng": "129.0409640000",
+    "startDate": "20260918",
+    "endDate": "20260920",
+    "addr": "부산 중구 중앙동 4가 15-33",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/58/4109358_image2_1.png",
+    "tel": "051-927-7056",
+    "contentid": "3368584",
     "hasDetail": true
   },
   {
@@ -1444,6 +1509,19 @@
   },
   {
     "type": "festival",
+    "title": "아라가야문화제",
+    "lat": "35.2694732541",
+    "lng": "128.4029793292",
+    "startDate": "20260918",
+    "endDate": "20260920",
+    "addr": "경상남도 함안군 가야읍 고분길 153-31",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/18/4106318_image2_1.JPG",
+    "tel": "055-585-9400",
+    "contentid": "3377089",
+    "hasDetail": true
+  },
+  {
+    "type": "festival",
     "title": "안다미로귀때박물관 기획전시 '명화와 티타임(Teatime) : 빛과 색채로 마시는 차 한 잔의 여유'",
     "lat": "35.9839360062",
     "lng": "128.3842314213",
@@ -1518,19 +1596,6 @@
     "image": "https://tong.visitkorea.or.kr/cms/resource/12/4100212_image2_1.jpg",
     "tel": "033-340-2746",
     "contentid": "2027215",
-    "hasDetail": true
-  },
-  {
-    "type": "festival",
-    "title": "양주 국가유산야행",
-    "lat": "37.7850538831",
-    "lng": "127.0295007970",
-    "startDate": "20260912",
-    "endDate": "20260920",
-    "addr": "경기도 양주시 부흥로1399번길 15 (유양동)",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/47/4105747_image2_1.png",
-    "tel": "031-8082-5673",
-    "contentid": "3000203",
     "hasDetail": true
   },
   {
@@ -1756,6 +1821,19 @@
   },
   {
     "type": "festival",
+    "title": "용산 국가유산야행",
+    "lat": "37.5445089972",
+    "lng": "126.9618771947",
+    "startDate": "20260911",
+    "endDate": "20260912",
+    "addr": "서울특별시 용산구 효창원로 177-18 (효창동)",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/19/4109419_image2_1.png",
+    "tel": "02-458-3315",
+    "contentid": "3354966",
+    "hasDetail": true
+  },
+  {
+    "type": "festival",
     "title": "울산고래축제",
     "lat": "35.5031615190",
     "lng": "129.3808069186",
@@ -1925,6 +2003,19 @@
   },
   {
     "type": "festival",
+    "title": "전주 국가유산야행",
+    "lat": "35.8141717863",
+    "lng": "127.1500212472",
+    "startDate": "20261002",
+    "endDate": "20261003",
+    "addr": "전북특별자치도 전주시 완산구 태조로 44 (풍남동3가)",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/34/4109434_image2_1.jpg",
+    "tel": "063-232-9937",
+    "contentid": "2393544",
+    "hasDetail": true
+  },
+  {
+    "type": "festival",
     "title": "전주한옥마을 전통연희 퍼레이드-노상놀이야",
     "lat": "35.814171786262136",
     "lng": "127.15002124718735",
@@ -2025,19 +2116,6 @@
     "image": "https://tong.visitkorea.or.kr/cms/resource/18/4106718_image2_1.jpg",
     "tel": "054-840-3461~3",
     "contentid": "4106717",
-    "hasDetail": true
-  },
-  {
-    "type": "festival",
-    "title": "제14회 부산국제항만컨퍼런스",
-    "lat": "35.1175129767",
-    "lng": "129.0493834405",
-    "startDate": "20260915",
-    "endDate": "20260916",
-    "addr": "부산광역시 동구 충장대로 206 (초량동)",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/79/4039679_image2_1.jpg",
-    "tel": "051-711-0069",
-    "contentid": "4033328",
     "hasDetail": true
   },
   {
@@ -2289,6 +2367,19 @@
   },
   {
     "type": "festival",
+    "title": "청년축제 유플페",
+    "lat": "37.5928932000",
+    "lng": "127.1946381000",
+    "startDate": "20260919",
+    "endDate": "20260919",
+    "addr": "경기도 남양주시 고산로 254-2 (삼패동)",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/29/4109429_image2_1.JPG",
+    "tel": "031-590-8226",
+    "contentid": "4109423",
+    "hasDetail": true
+  },
+  {
+    "type": "festival",
     "title": "청백리의 집, 오늘을 비추다",
     "lat": "37.4339272970",
     "lng": "126.8777258264",
@@ -2337,6 +2428,19 @@
     "image": "https://tong.visitkorea.or.kr/cms/resource/14/3549714_image2_1.jpg",
     "tel": "043-201-0254",
     "contentid": "613316",
+    "hasDetail": true
+  },
+  {
+    "type": "festival",
+    "title": "청춘대로",
+    "lat": "37.5520117940",
+    "lng": "127.0787702413",
+    "startDate": "20260919",
+    "endDate": "20260919",
+    "addr": "서울특별시 광진구 능동로 216 (능동)",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/04/4109404_image2_1.jpg",
+    "tel": "02-450-7596",
+    "contentid": "3340159",
     "hasDetail": true
   },
   {
@@ -2497,6 +2601,19 @@
   },
   {
     "type": "festival",
+    "title": "페스티벌 광명",
+    "lat": "37.4765540000",
+    "lng": "126.8693580000",
+    "startDate": "20261003",
+    "endDate": "20261004",
+    "addr": "경기도 광명시 철산동",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/27/4109227_image2_1.jpg",
+    "tel": "02-2680-2787",
+    "contentid": "2859297",
+    "hasDetail": true
+  },
+  {
+    "type": "festival",
     "title": "페인터즈",
     "lat": "37.5681732680976",
     "lng": "126.969976113229",
@@ -2519,19 +2636,6 @@
     "image": "https://tong.visitkorea.or.kr/cms/resource/28/3523028_image2_1.jpg",
     "tel": "033-335-2323",
     "contentid": "507635",
-    "hasDetail": true
-  },
-  {
-    "type": "festival",
-    "title": "평택호 물빛축제",
-    "lat": "36.9214412612",
-    "lng": "126.9222261083",
-    "startDate": "20260912",
-    "endDate": "20260912",
-    "addr": "경기도 평택시 현덕면 평택호길 159",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/16/4107416_image2_1.jpg",
-    "tel": "031-669-0964",
-    "contentid": "2034167",
     "hasDetail": true
   },
   {
@@ -2623,6 +2727,19 @@
     "image": "https://tong.visitkorea.or.kr/cms/resource/12/4104812_image2_1.png",
     "tel": "041-981-9859",
     "contentid": "3530743",
+    "hasDetail": true
+  },
+  {
+    "type": "festival",
+    "title": "한글날 문화행사",
+    "lat": "37.3047787539",
+    "lng": "127.6128192378",
+    "startDate": "20261009",
+    "endDate": "20261010",
+    "addr": "경기도 여주시 세종대왕면 영릉로 269-10",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/91/4109191_image2_1.jpg",
+    "tel": "031-881-9692",
+    "contentid": "3540329",
     "hasDetail": true
   },
   {
@@ -2789,7 +2906,7 @@
     "startDate": "20261205",
     "endDate": "20261205",
     "addr": "서울특별시 마포구 월드컵로 251 (성산동)",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/62/4108262_image2_1.jpg",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/70/4109170_image2_1.jpg",
     "tel": "02-332-3997",
     "contentid": "4108260",
     "hasDetail": true
@@ -3355,6 +3472,19 @@
   },
   {
     "type": "festival",
+    "title": "MOIM International",
+    "lat": "37.3795201238",
+    "lng": "126.8032733548",
+    "startDate": "20261017",
+    "endDate": "20261017",
+    "addr": "경기도 시흥시 시청로 20 (장현동)",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/59/4104859_image2_1.jpg",
+    "tel": "031-315-1889",
+    "contentid": "2833186",
+    "hasDetail": true
+  },
+  {
+    "type": "festival",
     "title": "NS푸드페스타",
     "lat": "36.0313590340",
     "lng": "126.9614892830",
@@ -3368,19 +3498,6 @@
   },
   {
     "type": "festival",
-    "title": "SIYF",
-    "lat": "37.3795201238",
-    "lng": "126.8032733548",
-    "startDate": "20261017",
-    "endDate": "20261017",
-    "addr": "경기도 시흥시 시청로 20 (장현동)",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/59/4104859_image2_1.jpg",
-    "tel": "031-315-1889",
-    "contentid": "2833186",
-    "hasDetail": true
-  },
-  {
-    "type": "festival",
     "title": "〈도기陶器, 우리를 담은 질그릇〉",
     "lat": "35.1896608044",
     "lng": "126.8839435426",
@@ -3390,6 +3507,19 @@
     "image": "https://tong.visitkorea.or.kr/cms/resource/92/4089092_image2_1.jpg",
     "tel": "062-570-7809",
     "contentid": "4089090",
+    "hasDetail": true
+  },
+  {
+    "type": "festival",
+    "title": "「인각사」와 함께하는 제5회 군위 삼국유사 전국 가족걷기대회",
+    "lat": "36.1280793877",
+    "lng": "128.7784271308",
+    "startDate": "20261024",
+    "endDate": "20261024",
+    "addr": "대구광역시 군위군 삼국유사면 삼국유사로 250",
+    "image": "https://tong.visitkorea.or.kr/cms/resource/19/4109219_image2_1.jpg",
+    "tel": "053-757-5137",
+    "contentid": "4109218",
     "hasDetail": true
   },
   {
@@ -9123,7 +9253,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/93/3407293_image2_1.jpg",
     "tel": "",
     "contentid": "2778472",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9136,7 +9266,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/13/3026913_image2_1.jpg",
     "tel": "",
     "contentid": "2674979",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9149,7 +9279,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/81/3079581_image2_1.JPG",
     "tel": "",
     "contentid": "3079601",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9162,7 +9292,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/74/3342174_image2_1.jpg",
     "tel": "",
     "contentid": "127827",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9175,7 +9305,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/41/2613141_image2_1.jpg",
     "tel": "",
     "contentid": "129615",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9188,7 +9318,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/31/3062631_image2_1.JPG",
     "tel": "",
     "contentid": "125828",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9201,7 +9331,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/47/3569847_image2_1.jpg",
     "tel": "",
     "contentid": "1683237",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9214,7 +9344,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/40/3558240_image2_1.jpg",
     "tel": "",
     "contentid": "127100",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9227,7 +9357,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/95/3364095_image2_1.JPG",
     "tel": "",
     "contentid": "127067",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9240,7 +9370,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/33/3570333_image2_1.jpg",
     "tel": "",
     "contentid": "2787474",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9253,7 +9383,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/17/2917917_image2_1.jpg",
     "tel": "",
     "contentid": "2614773",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9266,7 +9396,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/92/3055992_image2_1.jpg",
     "tel": "",
     "contentid": "125815",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9279,7 +9409,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/57/3558757_image2_1.jpg",
     "tel": "",
     "contentid": "2737285",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9292,7 +9422,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/63/3387163_image2_1.JPG",
     "tel": "",
     "contentid": "2715749",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9305,7 +9435,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/86/2921586_image2_1.jpg",
     "tel": "",
     "contentid": "125717",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9318,7 +9448,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/03/3347903_image2_1.JPG",
     "tel": "",
     "contentid": "128701",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9331,7 +9461,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/34/3582534_image2_1.jpg",
     "tel": "",
     "contentid": "131032",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9344,7 +9474,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/97/3373797_image2_1.JPG",
     "tel": "",
     "contentid": "2723634",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9357,7 +9487,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/44/3076944_image2_1.JPG",
     "tel": "",
     "contentid": "126012",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9370,7 +9500,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/44/3533344_image2_1.jpg",
     "tel": "",
     "contentid": "126238",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9383,7 +9513,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/44/3516344_image2_1.jpg",
     "tel": "",
     "contentid": "1586084",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9396,7 +9526,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/43/3372343_image2_1.JPG",
     "tel": "",
     "contentid": "127939",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9409,7 +9539,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/16/3503516_image2_1.jpg",
     "tel": "",
     "contentid": "125641",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9422,7 +9552,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/03/3040403_image2_1.jpg",
     "tel": "",
     "contentid": "127739",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9435,7 +9565,7 @@
     "image": "",
     "tel": "",
     "contentid": "1621384",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9448,7 +9578,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/47/3564947_image2_1.JPG",
     "tel": "",
     "contentid": "2771901",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9461,7 +9591,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/28/3558228_image2_1.jpg",
     "tel": "",
     "contentid": "1107065",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9474,7 +9604,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/70/3477170_image2_1.jpg",
     "tel": "",
     "contentid": "1928430",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9487,7 +9617,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/11/3575511_image2_1.jpg",
     "tel": "",
     "contentid": "129175",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9500,7 +9630,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/64/3575364_image2_1.jpg",
     "tel": "",
     "contentid": "126116",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9513,7 +9643,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/81/3464081_image2_1.jpg",
     "tel": "",
     "contentid": "128768",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9526,7 +9656,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/12/2929812_image2_1.jpg",
     "tel": "",
     "contentid": "2929834",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9539,7 +9669,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/14/3523614_image2_1.jpg",
     "tel": "",
     "contentid": "2738665",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9552,7 +9682,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/41/3553941_image2_1.jpg",
     "tel": "",
     "contentid": "2794659",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9565,7 +9695,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/40/3060440_image2_1.jpg",
     "tel": "",
     "contentid": "125465",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9578,7 +9708,7 @@
     "image": "",
     "tel": "",
     "contentid": "126653",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9591,7 +9721,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/80/3585580_image2_1.jpg",
     "tel": "",
     "contentid": "1899959",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9604,7 +9734,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/51/3535751_image2_1.jpg",
     "tel": "",
     "contentid": "126617",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9617,7 +9747,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/93/1606693_image2_1.jpg",
     "tel": "",
     "contentid": "128083",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9630,7 +9760,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/50/3567550_image2_1.jpg",
     "tel": "",
     "contentid": "2750341",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -10076,19 +10206,6 @@
   },
   {
     "type": "park",
-    "title": "동호숲",
-    "lat": "35.8019376764",
-    "lng": "127.9219489990",
-    "startDate": "",
-    "endDate": "",
-    "addr": "경상남도 거창군 웅양면 동호리 1055-1",
-    "image": "http://tong.visitkorea.or.kr/cms/resource/29/3368629_image2_1.jpg",
-    "tel": "",
-    "contentid": "2795779",
-    "hasDetail": false
-  },
-  {
-    "type": "park",
     "title": "동호해수욕장",
     "lat": "35.5143481439",
     "lng": "126.4816454501",
@@ -10423,19 +10540,6 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/42/3452942_image2_1.jpg",
     "tel": "",
     "contentid": "3448217",
-    "hasDetail": false
-  },
-  {
-    "type": "park",
-    "title": "따라비 오름",
-    "lat": "33.3859437827",
-    "lng": "126.7503310450",
-    "startDate": "",
-    "endDate": "",
-    "addr": "제주특별자치도 서귀포시 표선면 가시리",
-    "image": "http://tong.visitkorea.or.kr/cms/resource/05/3535905_image2_1.jpg",
-    "tel": "",
-    "contentid": "572968",
     "hasDetail": false
   },
   {
@@ -11528,19 +11632,6 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/78/2614778_image2_1.bmp",
     "tel": "",
     "contentid": "2614783",
-    "hasDetail": false
-  },
-  {
-    "type": "park",
-    "title": "무등산국립공원(전남)",
-    "lat": "35.0661631195",
-    "lng": "126.9980692182",
-    "startDate": "",
-    "endDate": "",
-    "addr": "전남광주통합특별시 화순군 화순읍 백운촌길 3-3",
-    "image": "http://tong.visitkorea.or.kr/cms/resource/32/3587032_image2_1.jpg",
-    "tel": "",
-    "contentid": "2795061",
     "hasDetail": false
   },
   {
@@ -13859,19 +13950,6 @@
   },
   {
     "type": "park",
-    "title": "비밀의 숲",
-    "lat": "33.4537780343",
-    "lng": "126.7552818445",
-    "startDate": "",
-    "endDate": "",
-    "addr": "제주특별자치도 제주시 구좌읍 송당리 2173",
-    "image": "http://tong.visitkorea.or.kr/cms/resource/87/3354187_image2_1.jpg",
-    "tel": "",
-    "contentid": "2779449",
-    "hasDetail": false
-  },
-  {
-    "type": "park",
     "title": "비봉산(양구)",
     "lat": "38.1144566351",
     "lng": "128.0046225421",
@@ -14154,19 +14232,6 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/40/3047340_image2_1.jpg",
     "tel": "",
     "contentid": "126817",
-    "hasDetail": false
-  },
-  {
-    "type": "park",
-    "title": "사수항",
-    "lat": "33.5096313338",
-    "lng": "126.4795239664",
-    "startDate": "",
-    "endDate": "",
-    "addr": "제주특별자치도 제주시 서해안로 319 (도두이동)",
-    "image": "http://tong.visitkorea.or.kr/cms/resource/47/3553747_image2_1.jpg",
-    "tel": "",
-    "contentid": "2794667",
     "hasDetail": false
   },
   {
@@ -17018,19 +17083,6 @@
   },
   {
     "type": "park",
-    "title": "쉬미항",
-    "lat": "34.5051380682",
-    "lng": "126.2002337644",
-    "startDate": "",
-    "endDate": "",
-    "addr": "전남광주통합특별시 진도군 진도읍 산월리",
-    "image": "http://tong.visitkorea.or.kr/cms/resource/33/3536033_image2_1.jpg",
-    "tel": "",
-    "contentid": "2795125",
-    "hasDetail": false
-  },
-  {
-    "type": "park",
     "title": "승달산",
     "lat": "34.9094634119",
     "lng": "126.4564542618",
@@ -17430,19 +17482,6 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/88/3529888_image2_1.jpg",
     "tel": "",
     "contentid": "2736409",
-    "hasDetail": false
-  },
-  {
-    "type": "park",
-    "title": "신창풍차해안도로",
-    "lat": "33.3431254722",
-    "lng": "126.1721349880",
-    "startDate": "",
-    "endDate": "",
-    "addr": "제주특별자치도 제주시 한경면 한경해안로 485",
-    "image": "http://tong.visitkorea.or.kr/cms/resource/24/3354424_image2_1.jpg",
-    "tel": "",
-    "contentid": "2663250",
     "hasDetail": false
   },
   {
@@ -20307,19 +20346,6 @@
   },
   {
     "type": "park",
-    "title": "용추폭포(괴산)",
-    "lat": "36.7042470915",
-    "lng": "127.8355207141",
-    "startDate": "",
-    "endDate": "",
-    "addr": "충청북도 괴산군 청천면 사기막리",
-    "image": "http://tong.visitkorea.or.kr/cms/resource/87/3534187_image2_1.jpg",
-    "tel": "",
-    "contentid": "2789658",
-    "hasDetail": false
-  },
-  {
-    "type": "park",
     "title": "용추폭포(무주)",
     "lat": "35.8425565790",
     "lng": "127.6828440841",
@@ -21490,19 +21516,6 @@
   },
   {
     "type": "park",
-    "title": "일영허브랜드(숲길정원)",
-    "lat": "37.6755322540",
-    "lng": "126.9237507018",
-    "startDate": "",
-    "endDate": "",
-    "addr": "경기도 양주시 장흥면 일영로 346-26",
-    "image": "http://tong.visitkorea.or.kr/cms/resource/18/3559518_image2_1.jpg",
-    "tel": "",
-    "contentid": "2789674",
-    "hasDetail": false
-  },
-  {
-    "type": "park",
     "title": "임원해변",
     "lat": "37.2231104837",
     "lng": "129.3408348715",
@@ -21616,19 +21629,6 @@
     "image": "",
     "tel": "",
     "contentid": "126708",
-    "hasDetail": false
-  },
-  {
-    "type": "park",
-    "title": "자구내포구",
-    "lat": "33.3093902050",
-    "lng": "126.1651502316",
-    "startDate": "",
-    "endDate": "",
-    "addr": "제주특별자치도 제주시 한경면 노을해안로 1161",
-    "image": "http://tong.visitkorea.or.kr/cms/resource/16/3553716_image2_1.jpg",
-    "tel": "",
-    "contentid": "2792595",
     "hasDetail": false
   },
   {
@@ -22751,19 +22751,6 @@
   },
   {
     "type": "park",
-    "title": "조천함덕해안도로",
-    "lat": "33.5427390309",
-    "lng": "126.6690845131",
-    "startDate": "",
-    "endDate": "",
-    "addr": "제주특별자치도 제주시 조천읍 조함해안로 525",
-    "image": "http://tong.visitkorea.or.kr/cms/resource/92/3553692_image2_1.jpg",
-    "tel": "",
-    "contentid": "2792568",
-    "hasDetail": false
-  },
-  {
-    "type": "park",
     "title": "졸띠유채밭",
     "lat": "33.4497589013",
     "lng": "126.9192593887",
@@ -23566,19 +23553,6 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/20/3569920_image2_1.JPG",
     "tel": "",
     "contentid": "126433",
-    "hasDetail": false
-  },
-  {
-    "type": "park",
-    "title": "진도항",
-    "lat": "34.3739989519",
-    "lng": "126.1346537229",
-    "startDate": "",
-    "endDate": "",
-    "addr": "전남광주통합특별시 진도군 임회면 진도항길 101",
-    "image": "http://tong.visitkorea.or.kr/cms/resource/78/3535978_image2_1.jpg",
-    "tel": "",
-    "contentid": "2795148",
     "hasDetail": false
   },
   {
@@ -26920,19 +26894,6 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/20/3499820_image2_1.jpg",
     "tel": "",
     "contentid": "827642",
-    "hasDetail": false
-  },
-  {
-    "type": "park",
-    "title": "협재포구",
-    "lat": "33.3995286760",
-    "lng": "126.2431108927",
-    "startDate": "",
-    "endDate": "",
-    "addr": "제주특별자치도 제주시 한림읍 협재리",
-    "image": "http://tong.visitkorea.or.kr/cms/resource/75/3553775_image2_1.jpg",
-    "tel": "",
-    "contentid": "2792603",
     "hasDetail": false
   },
   {
