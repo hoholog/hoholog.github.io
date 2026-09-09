@@ -133,7 +133,7 @@
             .map-wrapper { order: 2; flex: 1 1 auto; }
         }
     </style>
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9e0536bde5120d8fcdd09c780e431ea3&libraries=clusterer"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9e0536bde5120d8fcdd09c780e431ea3&libraries=clusterer,services"></script>
 </head>
 <body>
 
@@ -180,13 +180,17 @@
                 <option value="park">🌳 수목원/공원</option>
             </select>
         </div>
-        <button type="button" id="gpsBtn" onclick="useMyLocation()" style="width:100%; margin-bottom:14px; padding:9px; border:1.5px solid #e2e8f0; border-radius:10px; background:#fff; color:#334155; font-weight:700; font-size:13px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;">
+        <button type="button" id="gpsBtn" onclick="useMyLocation()" style="width:100%; margin-bottom:8px; padding:9px; border:1.5px solid #e2e8f0; border-radius:10px; background:#fff; color:#334155; font-weight:700; font-size:13px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;">
             📍 내 주변으로 보기
         </button>
+        <div style="display:flex; gap:6px; margin-bottom:14px;">
+            <input type="text" id="locationSearchInput" placeholder="위치가 안 맞으면 지역명 직접 입력 (예: 인천 계양구)" style="flex:1; padding:8px 10px; border:1.5px solid #e2e8f0; border-radius:10px; font-size:12px; box-sizing:border-box;" onkeydown="if(event.key==='Enter'){searchByLocationName();}">
+            <button type="button" onclick="searchByLocationName()" style="padding:8px 14px; border:none; border-radius:10px; background:#334155; color:#fff; font-weight:700; font-size:12px; cursor:pointer; white-space:nowrap;">검색</button>
+        </div>
         <ul class="today-list">
             <!-- TODAY_FESTIVALS_START -->
-<li class="today-item" data-cid="4093222" onclick="focusFestival(37.5655671650, 126.9783328596); closeTodayPanel();"><span class="today-region">서울·인천·경기</span><strong>2026 구미 로컬푸드 페스타</strong><span class="today-date">📅 2026.09.09 ~ 2026.09.10</span><span class="today-addr">📍 서울특별시 중구 을지로 지하12 (을지로1가)</span><div style="display:flex; gap:12px; margin-top:2px;"><a class="today-map-link" href="/festival/detail/4093222.html">상세보기 →</a><a class="today-map-link" href="https://map.kakao.com/link/map/2026%20%EA%B5%AC%EB%AF%B8%20%EB%A1%9C%EC%BB%AC%ED%91%B8%EB%93%9C%20%ED%8E%98%EC%8A%A4%ED%83%80,37.5655671650,126.9783328596" target="_blank" rel="noopener" onclick="event.stopPropagation()">지도에서 보기 →</a></div></li><li class="today-item" data-cid="4075091" onclick="focusFestival(37.6521031527, 127.6871063500); closeTodayPanel();"><span class="today-region">강원</span><strong>2026 전국 장애학생 e페스티벌</strong><span class="today-date">📅 2026.09.08 ~ 2026.09.09</span><span class="today-addr">📍 강원특별자치도 홍천군 서면 한치골길 262</span><div style="display:flex; gap:12px; margin-top:2px;"><a class="today-map-link" href="/festival/detail/4075091.html">상세보기 →</a><a class="today-map-link" href="https://map.kakao.com/link/map/2026%20%EC%A0%84%EA%B5%AD%20%EC%9E%A5%EC%95%A0%ED%95%99%EC%83%9D%20e%ED%8E%98%EC%8A%A4%ED%8B%B0%EB%B2%8C,37.6521031527,127.6871063500" target="_blank" rel="noopener" onclick="event.stopPropagation()">지도에서 보기 →</a></div></li><li class="today-item" data-cid="2756253" onclick="focusFestival(36.2790259229, 126.9128806090); closeTodayPanel();"><span class="today-region">세종·대전·충청</span><strong>국가유산 미디어아트 부여 정림사지</strong><span class="today-date">📅 2026.09.07 ~ 2026.09.27</span><span class="today-addr">📍 충청남도 부여군 부여읍 정림로 83</span><div style="display:flex; gap:12px; margin-top:2px;"><a class="today-map-link" href="/festival/detail/2756253.html">상세보기 →</a><a class="today-map-link" href="https://map.kakao.com/link/map/%EA%B5%AD%EA%B0%80%EC%9C%A0%EC%82%B0%20%EB%AF%B8%EB%94%94%EC%96%B4%EC%95%84%ED%8A%B8%20%EB%B6%80%EC%97%AC%20%EC%A0%95%EB%A6%BC%EC%82%AC%EC%A7%80,36.2790259229,126.9128806090" target="_blank" rel="noopener" onclick="event.stopPropagation()">지도에서 보기 →</a></div></li><li class="today-item" data-cid="2748395" onclick="focusFestival(35.8312933337, 128.5769703970); closeTodayPanel();"><span class="today-region">경상도</span><strong>남구청년예술제</strong><span class="today-date">📅 2026.09.01 ~ 2026.09.11</span><span class="today-addr">📍 대구광역시 남구 앞산순환로 478 (대명동)</span><div style="display:flex; gap:12px; margin-top:2px;"><a class="today-map-link" href="/festival/detail/2748395.html">상세보기 →</a><a class="today-map-link" href="https://map.kakao.com/link/map/%EB%82%A8%EA%B5%AC%EC%B2%AD%EB%85%84%EC%98%88%EC%88%A0%EC%A0%9C,35.8312933337,128.5769703970" target="_blank" rel="noopener" onclick="event.stopPropagation()">지도에서 보기 →</a></div></li><li class="today-item" data-cid="506523" onclick="focusFestival(36.0023418250, 127.6625749245); closeTodayPanel();"><span class="today-region">광주·전라도</span><strong>무주반딧불축제</strong><span class="today-date">📅 2026.09.04 ~ 2026.09.12</span><span class="today-addr">📍 전북특별자치도 무주군 무주읍 한풍루로 326-17</span><div style="display:flex; gap:12px; margin-top:2px;"><a class="today-map-link" href="/festival/detail/506523.html">상세보기 →</a><a class="today-map-link" href="https://map.kakao.com/link/map/%EB%AC%B4%EC%A3%BC%EB%B0%98%EB%94%A7%EB%B6%88%EC%B6%95%EC%A0%9C,36.0023418250,127.6625749245" target="_blank" rel="noopener" onclick="event.stopPropagation()">지도에서 보기 →</a></div></li><li class="today-item" data-cid="3512205" onclick="focusFestival(33.24708081676599, 126.56445889201075); closeTodayPanel();"><span class="today-region">제주</span><strong>2026 서귀포 원도심 문화페스티벌</strong><span class="today-date">📅 2026.04.11 ~ 2026.10.30</span><span class="today-addr">📍 제주특별자치도 서귀포시 이중섭로 11 (서귀동)</span><div style="display:flex; gap:12px; margin-top:2px;"><a class="today-map-link" href="/festival/detail/3512205.html">상세보기 →</a><a class="today-map-link" href="https://map.kakao.com/link/map/2026%20%EC%84%9C%EA%B7%80%ED%8F%AC%20%EC%9B%90%EB%8F%84%EC%8B%AC%20%EB%AC%B8%ED%99%94%ED%8E%98%EC%8A%A4%ED%8B%B0%EB%B2%8C,33.24708081676599,126.56445889201075" target="_blank" rel="noopener" onclick="event.stopPropagation()">지도에서 보기 →</a></div></li>
-<!-- TODAY_FESTIVALS_END -->
+            <li class="today-empty">축제 정보를 불러오는 중입니다...</li>
+            <!-- TODAY_FESTIVALS_END -->
         </ul>
         <p style="font-size:11px;color:#94a3b8;text-align:center;margin-top:14px;line-height:1.6">
             축제 정보는 최신 데이터를 기준으로 하루 약 3회 업데이트됩니다.<br>
@@ -730,12 +734,7 @@
         const btn = document.getElementById('gpsBtn');
         if (gpsModeActive) {
             // 다시 누르면 해제하고 일반 지역 보기로 복귀
-            gpsModeActive = false;
-            myLocation = null;
-            btn.textContent = '📍 내 주변으로 보기';
-            btn.style.background = '#fff';
-            btn.style.color = '#334155';
-            filterRegion(currentRegionKey === 'all' ? 'all' : currentRegionKey);
+            deactivateNearbyMode();
             return;
         }
         if (!navigator.geolocation) {
@@ -746,17 +745,8 @@
         btn.disabled = true;
         navigator.geolocation.getCurrentPosition(
             function (pos) {
-                myLocation = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-                gpsModeActive = true;
                 btn.disabled = false;
-                btn.textContent = '✕ 내 주변 보기 해제';
-                btn.style.background = '#eef2ff';
-                btn.style.color = '#4f46e5';
-                document.getElementById('regionSelectPanel').value = 'all';
-                currentRegionKey = 'all';
-                renderNearbyPanel();
-                map.setCenter(new kakao.maps.LatLng(myLocation.lat, myLocation.lng));
-                map.setLevel(7);
+                activateNearbyMode(pos.coords.latitude, pos.coords.longitude);
             },
             function () {
                 btn.disabled = false;
@@ -765,6 +755,62 @@
             },
             { enableHighAccuracy: true, timeout: 10000 }
         );
+    }
+
+    // 지역명을 직접 입력해서 위치를 찾는다 (GPS 정확도가 떨어질 때의 대안).
+    // 카카오맵 services 라이브러리의 주소 검색(Geocoder)과 키워드 검색을 함께 시도해서,
+    // "인천 계양구"처럼 정확한 주소든 "코엑스"처럼 장소명이든 웬만하면 찾히게 한다.
+    const geocoder = (typeof kakao !== 'undefined' && kakao.maps.services) ? new kakao.maps.services.Geocoder() : null;
+    const placesSearch = (typeof kakao !== 'undefined' && kakao.maps.services) ? new kakao.maps.services.Places() : null;
+
+    function searchByLocationName() {
+        const input = document.getElementById('locationSearchInput');
+        const keyword = input.value.trim();
+        if (!keyword) { input.focus(); return; }
+        if (!geocoder || !placesSearch) {
+            alert('위치 검색 기능을 불러오지 못했습니다. 새로고침 후 다시 시도해주세요.');
+            return;
+        }
+
+        geocoder.addressSearch(keyword, function (result, status) {
+            if (status === kakao.maps.services.Status.OK && result[0]) {
+                activateNearbyMode(parseFloat(result[0].y), parseFloat(result[0].x));
+                return;
+            }
+            // 주소로 못 찾으면 장소명(키워드) 검색으로 한 번 더 시도
+            placesSearch.keywordSearch(keyword, function (data, status2) {
+                if (status2 === kakao.maps.services.Status.OK && data[0]) {
+                    activateNearbyMode(parseFloat(data[0].y), parseFloat(data[0].x));
+                } else {
+                    alert('"' + keyword + '"의 위치를 찾지 못했습니다. 다른 지역명으로 다시 시도해주세요.');
+                }
+            });
+        });
+    }
+
+    // GPS든 지역명 검색이든, 위치가 확정되면 이 함수로 "내 주변 보기" 상태를 켠다.
+    function activateNearbyMode(lat, lng) {
+        myLocation = { lat: lat, lng: lng };
+        gpsModeActive = true;
+        const btn = document.getElementById('gpsBtn');
+        btn.textContent = '✕ 내 주변 보기 해제';
+        btn.style.background = '#eef2ff';
+        btn.style.color = '#4f46e5';
+        document.getElementById('regionSelectPanel').value = 'all';
+        currentRegionKey = 'all';
+        renderNearbyPanel();
+        map.setCenter(new kakao.maps.LatLng(lat, lng));
+        map.setLevel(7);
+    }
+
+    function deactivateNearbyMode() {
+        gpsModeActive = false;
+        myLocation = null;
+        const btn = document.getElementById('gpsBtn');
+        btn.textContent = '📍 내 주변으로 보기';
+        btn.style.background = '#fff';
+        btn.style.color = '#334155';
+        filterRegion(currentRegionKey);
     }
 
     // 현재 선택된 테마·기간에 맞는 항목 중, 내 위치에서 가까운 순으로 최대 10개를 보여준다.
