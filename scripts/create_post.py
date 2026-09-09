@@ -2236,7 +2236,8 @@ def build_quote_post(today_str):
   <div class="meta">※ 매일 업데이트 · 실존 인물의 명언과 오늘의 이야기</div>
 </div>"""
 
-    return title, content, ["오늘의명언", "위로명언", "명언", "운세", str(category)]
+    search_description = _plain(f'"{quote}" — {author_ko}({profession}). {meaning}', 155)
+    return title, content, ["오늘의명언", "위로명언", "명언", "운세", str(category)], search_description
 
 def birth_year_fortune(en_name, year):
     """출생연도별 맞춤 운세 반환 — 띠별×연도별 고유 문장"""
@@ -3048,7 +3049,11 @@ def build_zodiac_post(z, today_str):
   {comment_prompt("zodiac")}
   <div class="meta"><p>{z['kr']} ({z['date']})</p><p>※ 재미로 보는 운세 콘텐츠입니다</p></div>
 </div>"""
-    return title, content, ["별자리운세", z['kr'], "운세", "오늘운세", "noindex-daily"]
+    search_description = _plain(
+        f"{z['kr']} {today_dot} 오늘의 운세 — {signal_kw}. "
+        f"애정 {love}점·금전 {money}점·업무 {work_score}점. {action}", 155
+    )
+    return title, content, ["별자리운세", z['kr'], "운세", "오늘운세", "noindex-daily"], search_description
 
 
 _C_TITLE_MONEY  = ["금전운과 지출 관리 포인트", "금전운과 정리할 것", "금전운·소비 습관 점검", "금전운과 판단 기준"]
@@ -3417,7 +3422,11 @@ def build_chinese_post(c, today_str):
     <p>※ 재미로 보는 운세 콘텐츠입니다</p></div>
 {site_link()}
 </div>"""
-    return title, content, ["띠운세", c['kr'], "운세", "오늘운세", "noindex-daily"]
+    search_description = _plain(
+        f"{c['kr']} {today_sync} 오늘의 운세 — {signal}. "
+        f"애정 {love}점·금전 {money}점·건강 {health}점. {action}", 155
+    )
+    return title, content, ["띠운세", c['kr'], "운세", "오늘운세", "noindex-daily"], search_description
 
 
 _W_TITLE_LOVE   = ["이번 주 관계 흐름과 연락 타이밍", "이번 주 관계 변화와 소통 포인트", "이번 주 관계·소통 흐름 분석"]
@@ -3704,7 +3713,10 @@ def build_zodiac_weekly_post(today_str):
   <div class="meta">※ 재미로 보는 운세 콘텐츠입니다 · 매주 업데이트</div>
 </div>"""
 
-        results.append((title, content_html, ["별자리주간", z['kr'], "주간운세"]))
+        search_description = _plain(
+            f"{z['kr']} {week_range} 주간운세 — {signal}. {_wq['proverb']} {_wq['meaning']}", 155
+        )
+        results.append((title, content_html, ["별자리주간", z['kr'], "주간운세"], search_description))
     return results
 
 
@@ -4013,7 +4025,11 @@ def build_chinese_monthly_post(today_str):
   <div class="meta">※ 재미로 보는 운세 콘텐츠입니다 · 매월 업데이트</div>
 </div>"""
 
-        results.append((title, content_html, ["띠별월간", c['kr'], "월간운세"]))
+        _desc_meaning = str(_mq.get('풀이', _mq.get('meaning', '')))
+        search_description = _plain(
+            f"{c['kr']} {month_str} 월간운세 — {headline}. {_proverb_card} {_desc_meaning}", 155
+        )
+        results.append((title, content_html, ["띠별월간", c['kr'], "월간운세"], search_description))
     return results
 
 
@@ -4520,7 +4536,8 @@ def build_omnibus_post(today_str: str) -> tuple:
   <div class="meta">※ 재미로 보는 운세 콘텐츠입니다 · 매일 업데이트</div>
 </div>"""
     labels = ["별과띠가만나는시간", "별자리운세", "띠운세", "운세", "오늘운세"]
-    return title, content_html, labels
+    search_description = _plain(f"{today_str} 별과 띠가 만나는 시간 — {quote_clean}", 155)
+    return title, content_html, labels, search_description
 
 
 # ─────────────────────────────────────────
@@ -4733,7 +4750,7 @@ def _build_slug_title(labels):
     return f"{type_code}{item_code}-{date_part}"
 
 
-def post_blogger(title, content, labels, idx, total):
+def post_blogger(title, content, labels, description, idx, total):
     # ── 중복 발행 방지: 같은 제목이 이미 발행되어 있으면 건너뜀 ──
     if title in _EXISTING_TITLES:
         print(f"[{idx:02d}/{total}] ⏭️  이미 발행됨, 건너뜀 — {title[:45]}")
@@ -4759,7 +4776,7 @@ def post_blogger(title, content, labels, idx, total):
     for attempt in range(1, 4):  # 최대 3회 재시도
         resp = requests.post(url,
             headers={"Authorization":f"Bearer {ACCESS_TOKEN}","Content-Type":"application/json"},
-            json={"title":insert_title,"content":content,"labels":labels}
+            json={"title":insert_title,"content":content,"labels":labels,"searchDescription":description}
         )
         if resp.status_code == 200:
             post_id = resp.json().get("id")
@@ -4840,8 +4857,8 @@ def main():
         _test_posts = build_chinese_monthly_post(today_str)
         _test_post  = next((p for p in _test_posts if '쥐띠' in p[0]), _test_posts[0])
         print(f"🧪 FORCE_MONTHLY_TEST 모드: 쥐띠 월간운세 1개만 발행 ({today_str})")
-        title, content, labels = _test_post
-        post_blogger(title, content, labels, 1, 1)
+        title, content, labels, description = _test_post
+        post_blogger(title, content, labels, description, 1, 1)
         print("✅ 완료: 1/1개 게시 성공")
         return
 
@@ -4851,8 +4868,8 @@ def main():
         _w_posts = build_zodiac_weekly_post(today_str)
         _w_post  = next((p for p in _w_posts if '물고기자리' in p[0]), _w_posts[-1])
         print(f"🧪 FORCE_WEEKLY_TEST 모드: 물고기자리 주간운세 1개만 발행 ({today_str})")
-        title, content, labels = _w_post
-        post_blogger(title, content, labels, 1, 1)
+        title, content, labels, description = _w_post
+        post_blogger(title, content, labels, description, 1, 1)
         print("✅ 완료: 1/1개 게시 성공")
         return
 
@@ -4863,8 +4880,8 @@ def main():
         target_name = os.environ.get("FORCE_ZODIAC", "처녀자리")
         z = next((zz for zz in ZODIACS if zz['kr'] == target_name), ZODIACS[0])
         print(f"🧪 FORCE_ZODIAC_TEST 모드: {z['kr']} 오늘의 운세 1개만 발행 ({today_str})")
-        title, content, labels = build_zodiac_post(z, today_str)
-        post_blogger(title, content, labels, 1, 1)
+        title, content, labels, description = build_zodiac_post(z, today_str)
+        post_blogger(title, content, labels, description, 1, 1)
         print("✅ 완료: 1/1개 게시 성공")
         return
 
@@ -4875,8 +4892,8 @@ def main():
         target_name = os.environ.get("FORCE_CHINESE", "쥐띠")
         c = next((cc for cc in CHINESE if cc['kr'] == target_name), CHINESE[0])
         print(f"🧪 FORCE_CHINESE_TEST 모드: {c['kr']} 오늘의 운세 1개만 발행 ({today_str})")
-        title, content, labels = build_chinese_post(c, today_str)
-        post_blogger(title, content, labels, 1, 1)
+        title, content, labels, description = build_chinese_post(c, today_str)
+        post_blogger(title, content, labels, description, 1, 1)
         print("✅ 완료: 1/1개 게시 성공")
         return
 
@@ -4896,8 +4913,8 @@ def main():
         total = len(_w_posts)
         print(f"📅 FORCE_WEEKLY 모드: 별자리 주간운세 12개만 발행 ({today_str})")
         success = 0
-        for i, (title, content, labels) in enumerate(_w_posts, 1):
-            if post_blogger(title, content, labels, i, total):
+        for i, (title, content, labels, description) in enumerate(_w_posts, 1):
+            if post_blogger(title, content, labels, description, i, total):
                 success += 1
         print(f"\n✅ 완료: {success}/{total}개 게시 성공")
         return
@@ -4910,8 +4927,8 @@ def main():
         total = len(posts)
         print(f"\n🌟 {today_str} 띠 운세 단독 발행 — 총 {total}개\n")
         success = 0
-        for i, (title, content, labels) in enumerate(posts, 1):
-            if post_blogger(title, content, labels, i, total):
+        for i, (title, content, labels, description) in enumerate(posts, 1):
+            if post_blogger(title, content, labels, description, i, total):
                 success += 1
         print(f"\n✅ 완료: {success}/{total}개 게시 성공")
         return
@@ -4973,8 +4990,8 @@ def main():
     print(f"구성: {quote}별자리 12 + 띠 12 + 별과띠가만나는시간 1 + {weekly}{monthly}".rstrip(" + ") + f" = {total}개\n")
 
     success = 0
-    for i, (title, content, labels) in enumerate(posts, 1):
-        if post_blogger(title, content, labels, i, total):
+    for i, (title, content, labels, description) in enumerate(posts, 1):
+        if post_blogger(title, content, labels, description, i, total):
             success += 1
 
     print(f"\n✅ 완료: {success}/{total}개 게시 성공")
