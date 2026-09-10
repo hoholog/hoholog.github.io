@@ -165,26 +165,6 @@
 </head>
 <body class="bg-slate-50 text-slate-900 min-h-screen flex flex-col">
 
-    <!-- 업데이트 감지 배너 (평소엔 숨김) -->
-    <div id="_update_banner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:9999;
-         background:linear-gradient(90deg,#4f46e5,#7c3aed);color:#fff;
-         padding:10px 20px;align-items:center;justify-content:space-between;
-         font-size:13px;font-weight:700;box-shadow:0 2px 12px rgba(0,0,0,.3)">
-        <span>🔄 새 버전이 업데이트되었습니다!</span>
-        <div style="display:flex;gap:8px">
-            <button onclick="location.reload(true)"
-                style="background:#fff;color:#4f46e5;border:none;padding:5px 14px;
-                       border-radius:8px;font-weight:900;cursor:pointer;font-size:13px">
-                지금 새로고침
-            </button>
-            <button onclick="document.getElementById('_update_banner').style.display='none'"
-                style="background:rgba(255,255,255,.2);color:#fff;border:none;padding:5px 10px;
-                       border-radius:8px;cursor:pointer;font-size:12px">
-                나중에
-            </button>
-        </div>
-    </div>
-
     <!-- 상단 네비게이션 -->
     <nav class="bg-white/80 backdrop-blur-md border-b sticky top-0 z-50 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1634,5 +1614,25 @@
         </p>
     </div>
 </div>
+
+    <!-- 업데이트 감지 배너 (평소엔 숨김) -->
+    <div id="_update_banner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:9999;
+         background:linear-gradient(90deg,#4f46e5,#7c3aed);color:#fff;
+         padding:10px 20px;align-items:center;justify-content:space-between;
+         font-size:13px;font-weight:700;box-shadow:0 2px 12px rgba(0,0,0,.3)">
+        <span>🔄 새 버전이 업데이트되었습니다!</span>
+        <div style="display:flex;gap:8px">
+            <button onclick="location.reload(true)"
+                style="background:#fff;color:#4f46e5;border:none;padding:5px 14px;
+                       border-radius:8px;font-weight:900;cursor:pointer;font-size:13px">
+                지금 새로고침
+            </button>
+            <button onclick="document.getElementById('_update_banner').style.display='none'"
+                style="background:rgba(255,255,255,.2);color:#fff;border:none;padding:5px 10px;
+                       border-radius:8px;cursor:pointer;font-size:12px">
+                나중에
+            </button>
+        </div>
+    </div>
 
 </body>
