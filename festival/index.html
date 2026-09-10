@@ -183,6 +183,7 @@
                 <button type="button" class="theme-chip" data-theme="winter" onclick="toggleTheme('winter')">❄️ 겨울/눈</button>
                 <button type="button" class="theme-chip" data-theme="flower" onclick="toggleTheme('flower')">🌷 꽃</button>
                 <button type="button" class="theme-chip" data-theme="park" onclick="toggleTheme('park')">🌳 수목원/공원</button>
+                <button type="button" class="theme-chip" data-theme="shelter" onclick="toggleTheme('shelter')">🧊 무더위쉼터</button>
             </div>
         </div>
         <button type="button" id="gpsBtn" onclick="useMyLocation()" style="width:100%; margin-bottom:8px; padding:9px; border:1.5px solid #e2e8f0; border-radius:10px; background:#fff; color:#334155; font-weight:700; font-size:13px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;">
@@ -501,7 +502,7 @@
                 document.getElementById('cardTitle').innerText = item.title;
                 document.getElementById('cardDate').innerText = (item.startDate && item.endDate)
                     ? `📅 ${item.startDate} ~ ${item.endDate}`
-                    : '🌳 상시 개방';
+                    : (item.type === 'shelter' ? '🧊 무더위쉼터 (폭염기간 운영)' : '🌳 상시 개방');
                 document.getElementById('cardAddr').innerText = `📍 ${item.addr}`;
                 document.getElementById('cardImg').src = item.image || 'https://via.placeholder.com/70';
                 const detailLink = document.getElementById('cardDetailLink');
@@ -530,10 +531,17 @@
     }
 
 
+    // 축제처럼 기간(startDate/endDate)이 있는 게 아니라 항상 이용 가능한 장소 타입.
+    // 자연관광지(park)에 이어 무더위쉼터(shelter)도 같은 성격이라 함께 묶어서 판정한다.
+    const ALWAYS_OPEN_TYPES = ['park', 'shelter'];
+    function isAlwaysOpenType(type) {
+        return ALWAYS_OPEN_TYPES.indexOf(type) !== -1;
+    }
+
     // 기간 판정: 'today'는 오늘 진행중인지, 'month'/'nextmonth'는 그 달과 축제 기간이
     // 겹치는지로 본다 (기존 fetch_data.py의 today_list 필터링과 동일한 today 기준 유지).
     function matchesPeriod(item, period) {
-        if (item.type === 'park') return true; // 상시 개방 장소는 기간 필터 대상이 아님
+        if (isAlwaysOpenType(item.type)) return true; // 상시 개방 장소는 기간 필터 대상이 아님
         if (!item.startDate || !item.endDate) return false;
         if (period === 'all') {
             return item.endDate >= TODAY_STR; // 아직 끝나지 않은 것 전부 (오늘/이번달/다음달 범위와 무관)
@@ -557,13 +565,14 @@
     // 하나 이상 체크되어 있으면, 그중 하나라도 맞는 항목을 전부 보여준다(OR 조건).
     function matchesOneTheme(item, themeKey) {
         if (themeKey === 'park') return item.type === 'park';
+        if (themeKey === 'shelter') return item.type === 'shelter';
         const kws = THEME_KEYWORDS[themeKey];
         if (!kws) return true;
         return !!(item.title && kws.some(function (kw) { return item.title.includes(kw); }));
     }
 
     function matchesTheme(item, themeSet) {
-        if (!themeSet || themeSet.size === 0) return item.type !== 'park';
+        if (!themeSet || themeSet.size === 0) return !isAlwaysOpenType(item.type);
         for (const key of themeSet) {
             if (matchesOneTheme(item, key)) return true;
         }
@@ -618,7 +627,7 @@
         const addr = escapeHtml(item.addr);
         const dateLine = (item.startDate && item.endDate)
             ? '<span class="today-date">📅 ' + formatDateRange(item.startDate, item.endDate) + '</span>'
-            : '<span class="today-date">🌳 상시 개방</span>';
+            : '<span class="today-date">' + (item.type === 'shelter' ? '🧊 무더위쉼터 (폭염기간 운영)' : '🌳 상시 개방') + '</span>';
         const regionTag = (typeof distanceKm === 'number')
             ? '<span class="today-region">📍 ' + distanceKm.toFixed(1) + 'km</span>'
             : (showRegionTag && item._regionKey)
@@ -693,20 +702,20 @@
                 const aMatch = matchesTheme(a, currentThemes) ? 0 : 1;
                 const bMatch = matchesTheme(b, currentThemes) ? 0 : 1;
                 if (aMatch !== bMatch) return aMatch - bMatch;
-                // 매칭 여부가 같으면, 기간이 정해진 축제를 상시 개방 장소(공원 등)보다 먼저 보여준다
-                const aIsPark = a.type === 'park' ? 1 : 0;
-                const bIsPark = b.type === 'park' ? 1 : 0;
-                if (aIsPark !== bIsPark) return aIsPark - bIsPark;
+                // 매칭 여부가 같으면, 기간이 정해진 축제를 상시 개방 장소(공원·무더위쉼터 등)보다 먼저 보여준다
+                const aIsAlwaysOpen = isAlwaysOpenType(a.type) ? 1 : 0;
+                const bIsAlwaysOpen = isAlwaysOpenType(b.type) ? 1 : 0;
+                if (aIsAlwaysOpen !== bIsAlwaysOpen) return aIsAlwaysOpen - bIsAlwaysOpen;
                 return (a.endDate || '').localeCompare(b.endDate || '');
             }).slice(0, 15);
         } else if (key === 'all') {
-            items = pickRegionReps(periodFiltered.filter(item => item.type !== 'park'));
+            items = pickRegionReps(periodFiltered.filter(item => !isAlwaysOpenType(item.type)));
             showRegionTag = true;
             if (items.length === 0) {
-                items = periodFiltered.filter(item => item.type !== 'park').slice().sort(function (a, b) { return a.endDate.localeCompare(b.endDate); }).slice(0, 5);
+                items = periodFiltered.filter(item => !isAlwaysOpenType(item.type)).slice().sort(function (a, b) { return a.endDate.localeCompare(b.endDate); }).slice(0, 5);
             }
         } else {
-            items = pickRegionList(periodFiltered.filter(item => item.type !== 'park'), key);
+            items = pickRegionList(periodFiltered.filter(item => !isAlwaysOpenType(item.type)), key);
         }
 
         if (items.length === 0) {
