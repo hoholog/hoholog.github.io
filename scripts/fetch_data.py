@@ -3,6 +3,7 @@ import datetime
 import json
 import time
 import html
+import math
 from urllib.parse import quote
 import requests
 
@@ -403,6 +404,19 @@ def _pick_field(item, candidates, default=''):
     return default
 
 
+def webmercator_to_wgs84(x, y):
+    """safemap.go.kr(생활안전지도) 무더위쉼터 API가 x/y로 내려주는 좌표는
+    위경도(WGS84)가 아니라 웹 메르카토르(Web Mercator, EPSG:3857) 투영 좌표다.
+    이 값을 그대로 지도(Kakao Maps)에 넣으면 엉뚱한 위치(바다 한가운데 등)에
+    찍히므로, 반드시 위경도로 변환한 뒤에 써야 한다.
+    실제 응답 좌표(예: 신안군 자은면 x=14031309.0658, y=4145007.07747 →
+    위도 34.86, 경도 126.05)로 변환식을 검증 완료함."""
+    lon = (x / 20037508.34) * 180
+    lat_rad = 2 * math.atan(math.exp((y / 20037508.34) * math.pi)) - (math.pi / 2)
+    lat = lat_rad * 180 / math.pi
+    return lat, lon
+
+
 def build_shelter_page_html(shelter):
     """무더위쉼터 1건에 대한 독립 상세페이지를 만든다."""
     title = html.escape(shelter.get('title') or '')
@@ -787,8 +801,10 @@ def main():
         print(f"자연관광지 수집 실패, 이번 실행에서는 건너뜁니다: {e}")
 
     # ── 무더위쉼터 — 폭염 대책기간(5.20~9.30)에만 수집한다.
-    # 필드명은 표준데이터 관례상 대략 이렇게 올 걸로 예상하지만 100% 확정은 아니라서,
-    # 후보를 여러 개 두고(_pick_field) 첫 실행 결과를 보고 필요하면 조정한다.
+    # safemap.go.kr(생활안전지도) 무더위쉼터 API(IF_0001)의 실제 응답 필드로 확정됨
+    # (cc_nm=쉼터명, rn_adres/adres=주소, x/y=좌표, buld_sn=시설고유ID, 전화번호 필드는 없음).
+    # x/y는 위경도가 아니라 웹 메르카토르(EPSG:3857) 좌표라 webmercator_to_wgs84()로
+    # 반드시 변환해야 지도에 정확한 위치로 찍힌다.
     shelters = []
     if is_heatwave_season(TODAY):
         try:
@@ -796,14 +812,22 @@ def main():
             if shelter_items:
                 print("무더위쉼터 원본 샘플 1건(필드명 확인용):", json.dumps(shelter_items[0], ensure_ascii=False)[:500])
             for item in shelter_items:
-                lat = _pick_field(item, ['latitude', 'la', 'LA', 'Y', 'lat'])
-                lng = _pick_field(item, ['longitude', 'lo', 'LO', 'X', 'lng'])
-                title = _pick_field(item, ['fcltyNm', 'shterNm', 'FCLTY_NM', 'restrNm', 'title'])
-                addr = _pick_field(item, ['rdnmadr', 'refineRoadnmAddr', 'lnmadr', 'refineLotnoAddr', 'addr'])
-                tel = _pick_field(item, ['phoneNumber', 'telno', 'phoneNumbe'])
-                content_id = _pick_field(item, ['fcltyMnno', 'mgtNo', 'contentid']) or f"shelter-{hash((title, addr)) & 0xffffffff}"
+                title = (item.get('cc_nm') or '').strip()
+                addr = (item.get('rn_adres') or item.get('adres') or '').strip()
+                content_id = (item.get('buld_sn') or '').strip() or f"shelter-{hash((title, addr)) & 0xffffffff}"
+
+                raw_x = item.get('x')
+                raw_y = item.get('y')
+                lat, lng = None, None
+                if raw_x and raw_y:
+                    try:
+                        lat, lng = webmercator_to_wgs84(float(raw_x), float(raw_y))
+                    except (TypeError, ValueError):
+                        lat, lng = None, None
+
                 if not lat or not lng or not title:
                     continue
+
                 shelters.append({
                     'type': 'shelter',
                     'title': title,
@@ -813,7 +837,7 @@ def main():
                     'endDate': '',
                     'addr': addr,
                     'image': '',
-                    'tel': tel,
+                    'tel': '',  # 무더위쉼터 API에는 전화번호 필드가 없음
                     'contentid': str(content_id)
                 })
         except Exception as e:
