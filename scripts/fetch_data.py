@@ -393,7 +393,96 @@ def generate_nature_detail_pages(spots, max_new=40):
     print(f"자연관광지 상세페이지 신규 생성: {new_count}건, 애드센스 코드 보정: {patched_count}건{remaining_note}")
 
 
-def get_region_key(addr):
+def _pick_field(item, candidates, default=''):
+    """공공데이터 응답의 필드명이 기관마다 조금씩 달라, 후보 이름들을 순서대로
+    시도해서 처음 값이 있는 것을 쓴다. 전부 없으면 default를 반환한다."""
+    for key in candidates:
+        val = item.get(key)
+        if val not in (None, ''):
+            return val
+    return default
+
+
+def build_shelter_page_html(shelter):
+    """무더위쉼터 1건에 대한 독립 상세페이지를 만든다."""
+    title = html.escape(shelter.get('title') or '')
+    addr = html.escape(shelter.get('addr') or '')
+    tel = html.escape(shelter.get('tel') or '')
+    lat = shelter.get('lat') or ''
+    lng = shelter.get('lng') or ''
+
+    map_link_html = ''
+    if lat and lng:
+        map_url = f"https://map.kakao.com/link/map/{quote(shelter.get('title') or '무더위쉼터')},{lat},{lng}"
+        map_link_html = f'<a href="{map_url}" target="_blank" rel="noopener" class="detail-link">지도에서 보기 →</a>'
+    tel_html = f'<p class="detail-row"><strong>전화</strong> {tel}</p>' if tel else ''
+
+    return f'''<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{title} - 무더위쉼터 안내</title>
+<meta name="description" content="{title} | {addr}">
+<link rel="icon" href="/favicon.svg">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7990191075290055" crossorigin="anonymous"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+body{{font-family:'Noto Sans KR',sans-serif;max-width:640px;margin:0 auto;padding:20px 16px;color:#1e293b}}
+.detail-row{{margin:6px 0;font-size:14px;color:#475569}}
+.detail-link{{display:inline-block;margin-top:14px;color:#0891b2;font-weight:700;text-decoration:underline}}
+.back-link{{display:inline-block;margin-top:24px;color:#0891b2;font-weight:700;text-decoration:none}}
+</style>
+</head>
+<body>
+<span style="display:inline-block;background:#ecfeff;color:#0891b2;font-size:11px;font-weight:800;padding:4px 12px;border-radius:9999px;margin-bottom:10px">🧊 무더위쉼터</span>
+<h1 style="font-size:1.4rem;font-weight:900;margin-bottom:6px">{title}</h1>
+<p class="detail-row"><strong>주소</strong> {addr}</p>
+{tel_html}
+{map_link_html}
+<p style="margin-top:20px;padding-top:16px;border-top:1px solid #e2e8f0;font-size:13px;color:#94a3b8">폭염 대책기간(5.20~9.30) 중 무더위를 피해 쉬어갈 수 있는 곳입니다. 운영시간은 현지 사정에 따라 다를 수 있어 방문 전 확인을 권장합니다.</p>
+<a class="back-link" href="/festival/">← 지도에서 보기</a>
+</body>
+</html>'''
+
+
+def generate_shelter_detail_pages(shelters, max_new=40):
+    """무더위쉼터 상세페이지를 생성한다. 자연관광지와 동일하게 한 번에 조금씩만
+    새로 만들어 TourAPI 일일 할당량을 같이 쓰는 축제 수집에 영향이 없게 한다."""
+    detail_dir = os.path.join('festival', 'detail')
+    os.makedirs(detail_dir, exist_ok=True)
+
+    new_count = 0
+    skipped_for_quota = 0
+    for shelter in shelters:
+        content_id = shelter.get('contentid')
+        if not content_id:
+            continue
+        out_path = os.path.join(detail_dir, f'{content_id}.html')
+        if os.path.exists(out_path):
+            continue
+        if new_count >= max_new:
+            skipped_for_quota += 1
+            continue
+
+        page_html = build_shelter_page_html(shelter)
+        with open(out_path, 'w', encoding='utf-8') as fp:
+            fp.write(page_html)
+        new_count += 1
+
+    remaining_note = f", 다음 실행으로 이월: {skipped_for_quota}건" if skipped_for_quota else ""
+    print(f"무더위쉼터 상세페이지 신규 생성: {new_count}건{remaining_note}")
+
+
+def is_heatwave_season(today_str):
+    """폭염 대책기간(5.20~9.30) 안인지 판정한다. 이 기간 밖에서는 무더위쉼터를
+    아예 수집하지 않는다 — 시즌 지난 정보를 계속 보여주는 것보다, 다음 시즌에
+    자동으로 다시 나타나는 편이 안전하다."""
+    md = today_str[4:8]  # 'MMDD'
+    return '0520' <= md <= '0930'
+
+
+
     """주소로부터 지역 키를 판정한다 (map.html의 필터 로직과 동일한 기준)."""
     for key, keywords in REGION_KEYWORDS:
         if addr and any(kw in addr for kw in keywords):
@@ -697,7 +786,42 @@ def main():
     except Exception as e:
         print(f"자연관광지 수집 실패, 이번 실행에서는 건너뜁니다: {e}")
 
-    all_map_items = festivals + nature_spots
+    # ── 무더위쉼터 — 폭염 대책기간(5.20~9.30)에만 수집한다.
+    # 필드명은 표준데이터 관례상 대략 이렇게 올 걸로 예상하지만 100% 확정은 아니라서,
+    # 후보를 여러 개 두고(_pick_field) 첫 실행 결과를 보고 필요하면 조정한다.
+    shelters = []
+    if is_heatwave_season(TODAY):
+        try:
+            shelter_items = fetch_all_items('shelter')
+            if shelter_items:
+                print("무더위쉼터 원본 샘플 1건(필드명 확인용):", json.dumps(shelter_items[0], ensure_ascii=False)[:500])
+            for item in shelter_items:
+                lat = _pick_field(item, ['latitude', 'la', 'LA', 'Y', 'lat'])
+                lng = _pick_field(item, ['longitude', 'lo', 'LO', 'X', 'lng'])
+                title = _pick_field(item, ['fcltyNm', 'shterNm', 'FCLTY_NM', 'restrNm', 'title'])
+                addr = _pick_field(item, ['rdnmadr', 'refineRoadnmAddr', 'lnmadr', 'refineLotnoAddr', 'addr'])
+                tel = _pick_field(item, ['phoneNumber', 'telno', 'phoneNumbe'])
+                content_id = _pick_field(item, ['fcltyMnno', 'mgtNo', 'contentid']) or f"shelter-{hash((title, addr)) & 0xffffffff}"
+                if not lat or not lng or not title:
+                    continue
+                shelters.append({
+                    'type': 'shelter',
+                    'title': title,
+                    'lat': lat,
+                    'lng': lng,
+                    'startDate': '',
+                    'endDate': '',
+                    'addr': addr,
+                    'image': '',
+                    'tel': tel,
+                    'contentid': str(content_id)
+                })
+        except Exception as e:
+            print(f"무더위쉼터 수집 실패, 이번 실행에서는 건너뜁니다: {e}")
+    else:
+        print("폭염 대책기간(5.20~9.30) 밖이라 무더위쉼터는 수집하지 않습니다.")
+
+    all_map_items = festivals + nature_spots + shelters
 
     # ── 상세페이지 생성을 JSON 저장보다 먼저 한다 ──
     # 자연관광지는 하루 40건씩만 새로 만들어지므로(API 할당량 보호), 아직 상세페이지가
@@ -705,6 +829,7 @@ def main():
     # 404가 나므로, 실제로 파일이 존재하는지 확인해서 hasDetail로 표시해둔다.
     generate_detail_pages(festivals)
     generate_nature_detail_pages(nature_spots)
+    generate_shelter_detail_pages(shelters)
 
     detail_dir = os.path.join('festival', 'detail')
     for it in all_map_items:
@@ -716,7 +841,7 @@ def main():
     with open('data/festivals.json', 'w', encoding='utf-8') as f:
         json.dump(all_map_items, f, ensure_ascii=False, indent=2)
 
-    print(f"총 수신 {len(all_items)}건, 진행중/예정 축제 {len(festivals)}건 + 자연관광지 {len(nature_spots)}건 data/festivals.json에 저장 완료.")
+    print(f"총 수신 {len(all_items)}건, 진행중/예정 축제 {len(festivals)}건 + 자연관광지 {len(nature_spots)}건 + 무더위쉼터 {len(shelters)}건 data/festivals.json에 저장 완료.")
 
     update_map_html(all_map_items, TODAY)
 
@@ -778,6 +903,21 @@ def main():
                 'endDate': end_date,
                 'contentid': content_id,
             })
+
+    # 무더위쉼터도 상시 개방 장소와 같은 방식으로 포함 (시즌 밖이면 shelters 자체가 비어있음)
+    for shelter in shelters:
+        content_id = shelter.get('contentid', '')
+        if not content_id:
+            continue
+        if not os.path.exists(os.path.join('festival', 'detail', f'{content_id}.html')):
+            continue
+        sitemap_items.append({
+            'title': shelter.get('title'),
+            'addr': shelter.get('addr', ''),
+            'startDate': '',
+            'endDate': '',
+            'contentid': content_id,
+        })
 
     build_festival_list_page(sitemap_items)
     update_sitemap(sitemap_items)

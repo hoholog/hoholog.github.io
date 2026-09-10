@@ -3277,19 +3277,6 @@
   },
   {
     "type": "festival",
-    "title": "2026 전국 장애학생 e페스티벌",
-    "lat": "37.6521031527",
-    "lng": "127.6871063500",
-    "startDate": "20260908",
-    "endDate": "20260909",
-    "addr": "강원특별자치도 홍천군 서면 한치골길 262",
-    "image": "https://tong.visitkorea.or.kr/cms/resource/88/4075188_image2_1.jpg",
-    "tel": "010-2751-1082",
-    "contentid": "4075091",
-    "hasDetail": true
-  },
-  {
-    "type": "festival",
     "title": "2026 제14회 경기정원문화박람회",
     "lat": "37.5409386578",
     "lng": "127.3239607947",
@@ -9773,7 +9760,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/15/3566415_image2_1.jpg",
     "tel": "",
     "contentid": "2781614",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9786,7 +9773,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/98/3018298_image2_1.jpg",
     "tel": "",
     "contentid": "126262",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9799,7 +9786,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/27/3557127_image2_1.jpg",
     "tel": "",
     "contentid": "2776858",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9812,7 +9799,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/03/3535703_image2_1.jpg",
     "tel": "",
     "contentid": "2748348",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9825,7 +9812,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/55/3586555_image2_1.jpg",
     "tel": "",
     "contentid": "2738044",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9838,7 +9825,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/81/3069081_image2_1.jpg",
     "tel": "",
     "contentid": "585615",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9851,7 +9838,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/81/3048081_image2_1.jpg",
     "tel": "",
     "contentid": "129625",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9864,7 +9851,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/16/2653416_image2_1.jpg",
     "tel": "",
     "contentid": "126106",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9877,7 +9864,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/91/2726491_image2_1.jpg",
     "tel": "",
     "contentid": "129174",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9890,7 +9877,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/69/2753069_image2_1.jpg",
     "tel": "",
     "contentid": "2753093",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9903,7 +9890,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/67/3581967_image2_1.jpg",
     "tel": "",
     "contentid": "2714802",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9916,7 +9903,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/84/3589084_image2_1.jpg",
     "tel": "",
     "contentid": "126441",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9929,7 +9916,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/55/3381355_image2_1.JPG",
     "tel": "",
     "contentid": "126291",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9942,7 +9929,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/44/3523344_image2_1.jpg",
     "tel": "",
     "contentid": "2752547",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9955,7 +9942,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/84/3334184_image2_1.jpg",
     "tel": "",
     "contentid": "127084",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9968,7 +9955,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/66/3590166_image2_1.jpg",
     "tel": "",
     "contentid": "2723525",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9981,7 +9968,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/18/2661418_image2_1.jpg",
     "tel": "",
     "contentid": "2661425",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -9994,7 +9981,7 @@
     "image": "",
     "tel": "",
     "contentid": "129454",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -10007,7 +9994,7 @@
     "image": "",
     "tel": "",
     "contentid": "2756617",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -10020,7 +10007,7 @@
     "image": "",
     "tel": "",
     "contentid": "2806043",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -10033,7 +10020,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/43/3076843_image2_1.jpg",
     "tel": "",
     "contentid": "125685",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -10046,7 +10033,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/62/3393962_image2_1.JPG",
     "tel": "",
     "contentid": "2752126",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -10059,7 +10046,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/70/3351770_image2_1.JPG",
     "tel": "",
     "contentid": "2710838",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -10072,7 +10059,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/84/3061384_image2_1.jpg",
     "tel": "",
     "contentid": "126684",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -10085,7 +10072,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/76/3565776_image2_1.jpg",
     "tel": "",
     "contentid": "2784206",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -10098,7 +10085,7 @@
     "image": "",
     "tel": "",
     "contentid": "2014608",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -10111,7 +10098,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/72/2737172_image2_1.jpg",
     "tel": "",
     "contentid": "2736734",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -10124,7 +10111,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/01/3552201_image2_1.jpg",
     "tel": "",
     "contentid": "2738761",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -10137,7 +10124,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/27/3530827_image2_1.jpg",
     "tel": "",
     "contentid": "2746554",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -10150,7 +10137,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/19/3342719_image2_1.jpg",
     "tel": "",
     "contentid": "619709",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -10163,7 +10150,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/79/2753379_image2_1.jpeg",
     "tel": "",
     "contentid": "2752942",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -10176,7 +10163,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/14/3338114_image2_1.jpg",
     "tel": "",
     "contentid": "129558",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -10189,7 +10176,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/50/3077250_image2_1.JPG",
     "tel": "",
     "contentid": "2652453",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -10202,7 +10189,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/83/3354883_image2_1.jpg",
     "tel": "",
     "contentid": "2710737",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -10215,7 +10202,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/11/3336511_image2_1.jpg",
     "tel": "",
     "contentid": "126286",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -10228,7 +10215,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/69/3577869_image2_1.jpg",
     "tel": "",
     "contentid": "125640",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -10241,7 +10228,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/48/3554848_image2_1.jpg",
     "tel": "",
     "contentid": "126682",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -10254,7 +10241,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/96/3365596_image2_1.JPG",
     "tel": "",
     "contentid": "127538",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -10267,7 +10254,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/28/3589728_image2_1.jpg",
     "tel": "",
     "contentid": "2614716",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
@@ -10280,7 +10267,7 @@
     "image": "http://tong.visitkorea.or.kr/cms/resource/91/3564291_image2_1.jpg",
     "tel": "",
     "contentid": "2381393",
-    "hasDetail": false
+    "hasDetail": true
   },
   {
     "type": "park",
